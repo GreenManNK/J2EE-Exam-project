@@ -1,0 +1,253 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm Sản Phẩm - Thế Giới Di Động</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --tgdd-red: #d70018;
+            --tgdd-yellow: #ffd700;
+            --tgdd-gray: #888;
+            --tgdd-light-gray: #f5f5f5;
+            --tgdd-border: #e0e0e0;
+            --text-primary: #333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--tgdd-light-gray);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .header {
+            background: var(--tgdd-red);
+            color: white;
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 1.5rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1rem 3rem;
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-title {
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-title i {
+            color: var(--tgdd-red);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: var(--tgdd-red);
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .form-control,
+        .form-select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid var(--tgdd-border);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--tgdd-red);
+            box-shadow: 0 0 8px rgba(215, 0, 24, 0.2);
+        }
+
+        .form-hint {
+            font-size: 0.8rem;
+            color: var(--tgdd-gray);
+            margin-top: 0.3rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--tgdd-border);
+        }
+
+        .btn {
+            flex: 1;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .btn-submit {
+            background: var(--tgdd-red);
+            color: white;
+        }
+
+        .btn-submit:hover {
+            background: #b80015;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(215, 0, 24, 0.3);
+        }
+
+        .btn-cancel {
+            background: #757575;
+            color: white;
+        }
+
+        .btn-cancel:hover {
+            background: #616161;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <h1><i class="fas fa-plus-circle"></i> Thêm Sản Phẩm</h1>
+        </div>
+    </div>
+
+    <main>
+        <div class="form-container">
+            <div class="form-title">
+                <i class="fas fa-box"></i> Thông Tin Sản Phẩm Mới
+            </div>
+
+            <form th:action="@{/products/add}" th:object="${product}" method="post">
+                <div class="form-group">
+                    <label class="form-label" for="name">Tên Sản Phẩm <span style="color: red;">*</span></label>
+                    <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Nhập tên sản phẩm" required>
+                    <div class="form-hint">Nhập tên sản phẩm rõ ràng, đầy đủ</div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="category">Danh Mục <span style="color: red;">*</span></label>
+                        <select class="form-select" id="category" th:field="*{category}" required>
+                            <option value="">-- Chọn Danh Mục --</option>
+                            <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}">Danh Mục</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="price">Giá Bán <span style="color: red;">*</span></label>
+                        <input type="number" class="form-control" id="price" th:field="*{price}" placeholder="0" min="0" required>
+                        <div class="form-hint">Nhập giá bán (VND)</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="quantity">Số Lượng <span style="color: red;">*</span></label>
+                        <input type="number" class="form-control" id="quantity" th:field="*{quantity}" placeholder="0" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="discount">Chiết Khấu (%)</label>
+                        <input type="number" class="form-control" id="discount" th:field="*{discount}" placeholder="0" min="0" max="100">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="description">Mô Tả</label>
+                    <textarea class="form-control" id="description" th:field="*{description}" placeholder="Mô tả chi tiết sản phẩm" rows="4" style="resize: vertical;"></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-submit">
+                        <i class="fas fa-save"></i> Thêm Sản Phẩm
+                    </button>
+                    <a href="/products" class="btn btn-cancel">
+                        <i class="fas fa-times"></i> Hủy Bỏ
+                    </a>
+                </div>
+            </form>
+        </div>
+    </main>
+    <script src="/js/script.js"></script>
+</body>
+</html>
+
+
+
+
+

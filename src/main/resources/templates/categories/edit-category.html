@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sua Danh Muc</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .icon-preview {
+            margin-top: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px dashed #d1d5db;
+            border-radius: 8px;
+            padding: 8px 10px;
+            color: #374151;
+        }
+
+        .icon-preview i {
+            color: #d70018;
+            width: 18px;
+        }
+    </style>
+</head>
+<body class="tgdd-page-body">
+<th:block th:replace="~{fragments/tgdd-shell :: siteHeader}"></th:block>
+
+<main class="tgdd-main">
+    <div class="tgdd-container" style="max-width: 720px;">
+        <div class="tgdd-page-head">
+            <h1 class="tgdd-page-title"><i class="fas fa-pen"></i> Sua danh muc</h1>
+            <a class="tgdd-btn tgdd-btn-light" href="/categories"><i class="fas fa-arrow-left"></i> Quay lai</a>
+        </div>
+
+        <div class="tgdd-card" style="padding: 16px;">
+            <form th:action="@{/categories/edit/{id}(id=${category.id})}" th:object="${category}" method="post">
+                <div class="tgdd-form-group">
+                    <label for="name">Ten danh muc *</label>
+                    <input id="name" type="text" th:field="*{name}" required>
+                </div>
+                <div class="tgdd-form-group">
+                    <label for="icon">Icon danh muc</label>
+                    <input id="icon" type="text" th:field="*{icon}" placeholder="Vi du: fas fa-mobile-alt">
+                    <div class="icon-preview">
+                        <i id="iconPreviewSymbol" class="fas fa-list"></i>
+                        <span id="iconPreviewText">fas fa-list</span>
+                    </div>
+                </div>
+                <button class="tgdd-btn tgdd-btn-primary" type="submit">
+                    <i class="fas fa-save"></i> Cap nhat danh muc
+                </button>
+            </form>
+        </div>
+    </div>
+</main>
+
+<th:block th:replace="~{fragments/tgdd-shell :: siteFooter}"></th:block>
+    <script src="/js/script.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const iconInput = document.getElementById("icon");
+            const previewSymbol = document.getElementById("iconPreviewSymbol");
+            const previewText = document.getElementById("iconPreviewText");
+            if (!iconInput || !previewSymbol || !previewText) {
+                return;
+            }
+            const renderIcon = () => {
+                const value = iconInput.value.trim() || "fas fa-list";
+                previewSymbol.className = value;
+                previewText.textContent = value;
+            };
+            renderIcon();
+            iconInput.addEventListener("input", renderIcon);
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+

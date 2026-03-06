@@ -1,0 +1,294 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flash Sale - Thegioididong Style</title>
+  <!-- Bootstrap 5.3 CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --tgdd-red: #d70018;
+      --tgdd-yellow: #ffcc00;
+      --tgdd-gray: #888;
+      --tgdd-blue: #007bff;
+    }
+    .flash-sale-section {
+      background: var(--tgdd-red);
+      border-radius: 24px;
+      padding: 32px 16px;
+      margin: 24px 0;
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+    }
+    .flash-sale-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+    .flash-sale-title {
+      font-size: 2rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .flash-sale-title .fire-icon {
+      font-size: 2.2rem;
+      color: var(--tgdd-yellow);
+      filter: drop-shadow(0 0 2px #fff);
+    }
+    .flash-sale-timer {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .timer-box {
+      background: #fff;
+      color: var(--tgdd-red);
+      font-weight: bold;
+      font-size: 1.2rem;
+      border-radius: 8px;
+      padding: 6px 16px;
+      min-width: 48px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .flash-sale-badge {
+      background: var(--tgdd-yellow);
+      color: var(--tgdd-red);
+      font-weight: bold;
+      border-radius: 12px;
+      padding: 6px 16px;
+      font-size: 1rem;
+      margin-left: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .product-card {
+      background: #fff;
+      border: 2px solid var(--tgdd-red);
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      padding: 16px;
+      margin-bottom: 24px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .product-card:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+    .product-image {
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+    .product-image img {
+      max-height: 100%;
+      max-width: 100%;
+      object-fit: contain;
+    }
+    .product-name {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #222;
+      margin-bottom: 8px;
+      min-height: 48px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .product-prices {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .sale-price {
+      color: var(--tgdd-red);
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+    .old-price {
+      color: var(--tgdd-gray);
+      text-decoration: line-through;
+      font-size: 1rem;
+    }
+    .discount {
+      color: var(--tgdd-red);
+      font-weight: bold;
+      font-size: 1rem;
+      margin-left: auto;
+    }
+    .stock-pill {
+      background: var(--tgdd-yellow);
+      color: var(--tgdd-red);
+      font-weight: bold;
+      border-radius: 24px;
+      padding: 4px 16px;
+      font-size: 0.95rem;
+      display: inline-block;
+      margin-bottom: 10px;
+      margin-top: 4px;
+    }
+    .buy-btn {
+      background: var(--tgdd-blue);
+      color: #fff;
+      font-weight: bold;
+      border-radius: 12px;
+      width: 100%;
+      margin-top: auto;
+      font-size: 1.1rem;
+      padding: 10px 0;
+      transition: background 0.2s;
+      border: none;
+    }
+    .buy-btn:hover, .buy-btn:focus {
+      background: #0056b3;
+      color: #fff;
+    }
+    @media (max-width: 991px) {
+      .flash-sale-title { font-size: 1.5rem; }
+      .product-image { height: 100px; }
+    }
+    @media (max-width: 767px) {
+      .flash-sale-section { padding: 16px 4px; }
+      .flash-sale-header { flex-direction: column; gap: 12px; }
+      .product-card { padding: 12px; }
+    }
+  </style>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body style="background:#f5f5f5;">
+  <div class="container-fluid">
+    <div class="flash-sale-section">
+      <div class="flash-sale-header">
+        <div class="flash-sale-title">
+          <span class="fire-icon">🔥</span>
+          FLASH SALE
+        </div>
+        <div class="flash-sale-timer">
+          <span class="timer-box" id="hh">01</span>
+          <span>:</span>
+          <span class="timer-box" id="mm">23</span>
+          <span>:</span>
+          <span class="timer-box" id="ss">45</span>
+        </div>
+        <span class="flash-sale-badge">ONLINE ONLY</span>
+      </div>
+      <div class="row">
+        <!-- Product Card 1 -->
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 mb-3">
+          <div class="product-card h-100">
+            <div class="product-image">
+              <img src="https://cdn.tgdd.vn/Products/Images/42/305658/iphone-15-pro-max-blue-thumb-600x600.jpg" alt="iPhone 15 Pro Max">
+            </div>
+            <div class="product-name">iPhone 15 Pro Max 256GB Xanh Titan</div>
+            <div class="product-prices">
+              <span class="sale-price">27.990.000₫</span>
+              <span class="old-price">34.990.000₫</span>
+              <span class="discount">-20%</span>
+            </div>
+            <span class="stock-pill">🔥 Còn 5/20 suất</span>
+            <button class="buy-btn">Mua ngay</button>
+          </div>
+        </div>
+        <!-- Product Card 2 -->
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 mb-3">
+          <div class="product-card h-100">
+            <div class="product-image">
+              <img src="https://cdn.tgdd.vn/Products/Images/42/305658/iphone-15-pro-max-black-thumb-600x600.jpg" alt="iPhone 15 Pro Max Đen">
+            </div>
+            <div class="product-name">iPhone 15 Pro Max 512GB Đen Titan</div>
+            <div class="product-prices">
+              <span class="sale-price">32.990.000₫</span>
+              <span class="old-price">39.990.000₫</span>
+              <span class="discount">-18%</span>
+            </div>
+            <span class="stock-pill">🔥 Còn 2/15 suất</span>
+            <button class="buy-btn">Mua ngay</button>
+          </div>
+        </div>
+        <!-- Product Card 3 -->
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 mb-3">
+          <div class="product-card h-100">
+            <div class="product-image">
+              <img src="https://cdn.tgdd.vn/Products/Images/42/305658/iphone-15-pro-max-white-thumb-600x600.jpg" alt="iPhone 15 Pro Max Trắng">
+            </div>
+            <div class="product-name">iPhone 15 Pro Max 256GB Trắng Titan</div>
+            <div class="product-prices">
+              <span class="sale-price">27.990.000₫</span>
+              <span class="old-price">34.990.000₫</span>
+              <span class="discount">-20%</span>
+            </div>
+            <span class="stock-pill">🔥 Còn 8/20 suất</span>
+            <button class="buy-btn">Mua ngay</button>
+          </div>
+        </div>
+        <!-- Product Card 4 -->
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 mb-3">
+          <div class="product-card h-100">
+            <div class="product-image">
+              <img src="https://cdn.tgdd.vn/Products/Images/42/305658/iphone-15-pro-max-nature-thumb-600x600.jpg" alt="iPhone 15 Pro Max Nature">
+            </div>
+            <div class="product-name">iPhone 15 Pro Max 1TB Nature Titan</div>
+            <div class="product-prices">
+              <span class="sale-price">39.990.000₫</span>
+              <span class="old-price">44.990.000₫</span>
+              <span class="discount">-11%</span>
+            </div>
+            <span class="stock-pill">🔥 Còn 1/10 suất</span>
+            <button class="buy-btn">Mua ngay</button>
+          </div>
+        </div>
+        <!-- Product Card 5 -->
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 mb-3">
+          <div class="product-card h-100">
+            <div class="product-image">
+              <img src="https://cdn.tgdd.vn/Products/Images/42/305658/iphone-15-pro-max-pink-thumb-600x600.jpg" alt="iPhone 15 Pro Max Hồng">
+            </div>
+            <div class="product-name">iPhone 15 Pro Max 256GB Hồng Titan</div>
+            <div class="product-prices">
+              <span class="sale-price">27.990.000₫</span>
+              <span class="old-price">34.990.000₫</span>
+              <span class="discount">-20%</span>
+            </div>
+            <span class="stock-pill">🔥 Còn 3/20 suất</span>
+            <button class="buy-btn">Mua ngay</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Optional: Countdown timer JS -->
+  <script>
+    // Simple countdown example (1h 23m 45s)
+    let totalSeconds = 5025;
+    function pad(n) { return n.toString().padStart(2, '0'); }
+    function updateTimer() {
+      let hh = Math.floor(totalSeconds / 3600);
+      let mm = Math.floor((totalSeconds % 3600) / 60);
+      let ss = totalSeconds % 60;
+      document.getElementById('hh').textContent = pad(hh);
+      document.getElementById('mm').textContent = pad(mm);
+      document.getElementById('ss').textContent = pad(ss);
+      if (totalSeconds > 0) totalSeconds--;
+    }
+    setInterval(updateTimer, 1000);
+    updateTimer();
+  </script>
+    <script src="/js/script.js"></script>
+</body>
+</html>
+
+
+
+
+

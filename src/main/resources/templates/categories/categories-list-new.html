@@ -1,0 +1,309 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sách Danh Mục - Thế Giới Di Động</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        :root {
+            --tgdd-red: #d70018;
+            --tgdd-yellow: #ffd700;
+            --tgdd-gray: #888;
+            --tgdd-light-gray: #f5f5f5;
+            --tgdd-border: #e0e0e0;
+            --text-primary: #333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--tgdd-light-gray);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .header {
+            background: var(--tgdd-red);
+            color: white;
+            padding: 1rem 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 1.5rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .header-nav a {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: all 0.3s;
+        }
+
+        .header-nav a:hover {
+            color: var(--tgdd-yellow);
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .content-area {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .content-title {
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-add {
+            background: var(--tgdd-red);
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .btn-add:hover {
+            background: #b80015;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(215, 0, 24, 0.3);
+        }
+
+        /* Table */
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        thead {
+            background: var(--tgdd-red);
+            color: white;
+        }
+
+        th {
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        td {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--tgdd-border);
+            color: var(--text-primary);
+        }
+
+        tbody tr:hover {
+            background-color: var(--tgdd-light-gray);
+        }
+
+        .category-name {
+            font-weight: 500;
+        }
+
+        .category-product-count {
+            background: var(--tgdd-yellow);
+            color: var(--tgdd-red);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-edit {
+            background: #ff9800;
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+        }
+
+        .btn-edit:hover {
+            background: #e68900;
+        }
+
+        .btn-delete {
+            background: var(--tgdd-red);
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+
+        .btn-delete:hover {
+            background: #b80015;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .header-nav {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .content-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            th, td {
+                padding: 0.5rem;
+                font-size: 0.85rem;
+            }
+
+            .btn-add {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Navigation -->
+    <div class="header">
+        <div class="header-content">
+            <h1><i class="fas fa-mobile-alt"></i> Thế Giới Di Động</h1>
+            <div class="header-nav">
+                <a href="/"><i class="fas fa-home"></i> Trang Chủ</a>
+                <a href="/products"><i class="fas fa-list"></i> Sản Phẩm</a>
+                <a href="/categories"><i class="fas fa-tags"></i> Danh Mục</a>
+                <a href="/orders"><i class="fas fa-shopping-bag"></i> Đơn Hàng</a>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <div class="content-area">
+            <div class="content-header">
+                <div class="content-title">
+                    <i class="fas fa-list"></i> Danh Sách Danh Mục
+                </div>
+                <a href="/categories/add" class="btn-add">
+                    <i class="fas fa-plus-circle"></i> Thêm Danh Mục
+                </a>
+            </div>
+
+            <!-- Categories Table -->
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 50%;">Tên Danh Mục</th>
+                            <th style="width: 25%;">Số Sản Phẩm</th>
+                            <th style="width: 25%;">Hành Động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="category : ${categories}">
+                            <td class="category-name" th:text="${category.name}">Danh mục</td>
+                            <td>
+                                <span class="category-product-count" th:text="${category.productCount}">10</span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a th:href="@{/categories/edit/{id}(id=${category.id})}" class="btn-edit">
+                                        <i class="fas fa-edit"></i> Sửa
+                                    </a>
+                                    <form th:action="@{/categories/delete/{id}(id=${category.id})}" method="post" style="display: inline;">
+                                        <button type="submit" class="btn-delete" onclick="return confirm('Bạn chắc chắn muốn xóa danh mục này?')">
+                                            <i class="fas fa-trash"></i> Xóa
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr th:if="${categories.isEmpty()}">
+                            <td colspan="3" style="text-align: center; color: var(--tgdd-gray); padding: 2rem;">
+                                <i class="fas fa-inbox" style="font-size: 2rem; margin-bottom: 0.5rem; display: block;"></i>
+                                Chưa có danh mục nào
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+    <script src="/js/script.js"></script>
+</body>
+</html>
+
+
+

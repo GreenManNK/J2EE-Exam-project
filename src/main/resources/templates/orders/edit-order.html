@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sua Don Hang</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="tgdd-page-body">
+<th:block th:replace="~{fragments/tgdd-shell :: siteHeader}"></th:block>
+
+<main class="tgdd-main">
+    <div class="tgdd-container" style="max-width: 920px;">
+        <div class="tgdd-page-head">
+            <h1 class="tgdd-page-title"><i class="fas fa-pen"></i> Sua don hang</h1>
+            <a class="tgdd-btn tgdd-btn-light" href="/orders"><i class="fas fa-arrow-left"></i> Quay lai</a>
+        </div>
+
+        <div class="tgdd-card" style="padding: 16px;">
+            <form th:action="@{/orders/edit/{id}(id=${order.id})}" th:object="${order}" method="post">
+                <div class="tgdd-form-grid">
+                    <div class="tgdd-form-group">
+                        <label for="customerName">Ten khach hang *</label>
+                        <input id="customerName" th:field="*{customerName}" type="text" required>
+                    </div>
+                    <div class="tgdd-form-group">
+                        <label for="phone">So dien thoai *</label>
+                        <input id="phone" th:field="*{phone}" type="text" required>
+                    </div>
+                </div>
+
+                <div class="tgdd-form-group">
+                    <label for="address">Dia chi *</label>
+                    <input id="address" th:field="*{address}" type="text" required>
+                </div>
+
+                <div class="tgdd-form-group">
+                    <label for="notes">Ghi chu</label>
+                    <textarea id="notes" rows="3" th:field="*{notes}"></textarea>
+                </div>
+
+                <div class="tgdd-form-grid">
+                    <div class="tgdd-form-group">
+                        <label for="totalPrice">Tong tien *</label>
+                        <input id="totalPrice" th:field="*{totalPrice}" type="number" min="0" required>
+                    </div>
+                    <div class="tgdd-form-group">
+                        <label for="status">Trang thai *</label>
+                        <select id="status" th:field="*{status}" required>
+                            <option value="">-- Chon trang thai --</option>
+                            <option value="pending">pending</option>
+                            <option value="processing">processing</option>
+                            <option value="shipped">shipped</option>
+                            <option value="delivered">delivered</option>
+                            <option value="cancelled">cancelled</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button class="tgdd-btn tgdd-btn-primary" type="submit">
+                    <i class="fas fa-save"></i> Cap nhat don hang
+                </button>
+            </form>
+        </div>
+    </div>
+</main>
+
+<th:block th:replace="~{fragments/tgdd-shell :: siteFooter}"></th:block>
+    <script src="/js/script.js"></script>
+</body>
+</html>
+
+
+
+
+
+

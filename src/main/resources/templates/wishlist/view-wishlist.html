@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sach Yeu Thich</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            gap: 14px;
+        }
+        .item {
+            padding: 12px;
+        }
+        .thumb {
+            height: 150px;
+            border-radius: 10px;
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        .name {
+            font-size: 15px;
+            font-weight: 700;
+            min-height: 38px;
+        }
+        .cat {
+            color: #6b7280;
+            font-size: 13px;
+            margin: 4px 0 6px;
+        }
+        .price {
+            color: #d70018;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+        .actions form {
+            flex: 1;
+        }
+        .actions button {
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="tgdd-page-body">
+<th:block th:replace="~{fragments/tgdd-shell :: siteHeader}"></th:block>
+
+<main class="tgdd-main">
+    <div class="tgdd-container">
+        <div class="tgdd-page-head">
+            <h1 class="tgdd-page-title"><i class="fas fa-heart"></i> Danh sach yeu thich</h1>
+            <a class="tgdd-btn tgdd-btn-light" href="/products"><i class="fas fa-arrow-left"></i> Quay lai mua sam</a>
+        </div>
+
+        <div th:if="${#lists.isEmpty(wishlist)}" class="tgdd-card" style="padding: 20px;">
+            <div class="tgdd-empty">
+                <i class="fas fa-heart-crack" style="font-size: 40px;"></i>
+                <p>Ban chua co san pham yeu thich.</p>
+            </div>
+        </div>
+
+        <div class="grid" th:unless="${#lists.isEmpty(wishlist)}">
+            <div class="tgdd-card item" th:each="item : ${wishlist}">
+                <div class="thumb"><i class="fas fa-image"></i></div>
+                <div class="name" th:text="${item.product.name}">Ten san pham</div>
+                <div class="cat" th:text="${item.product.category != null ? item.product.category.name : 'Khong danh muc'}">Danh muc</div>
+                <div class="price" th:text="'₫' + ${#numbers.formatInteger(item.product.price, 0, 'DEFAULT')}">₫0</div>
+                <div class="actions">
+                    <form th:action="@{/cart/add/{id}(id=${item.product.id})}" method="post">
+                        <button class="tgdd-btn tgdd-btn-primary" type="submit"><i class="fas fa-cart-plus"></i> Them gio</button>
+                    </form>
+                    <form th:action="@{/wishlist/remove/{id}(id=${item.id})}" method="post">
+                        <button class="tgdd-btn tgdd-btn-light" type="submit"><i class="fas fa-trash"></i> Xoa</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<th:block th:replace="~{fragments/tgdd-shell :: siteFooter}"></th:block>
+    <script src="/js/script.js"></script>
+</body>
+</html>
+
+
+
+
+
+

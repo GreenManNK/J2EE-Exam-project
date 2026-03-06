@@ -1,0 +1,768 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thế Giới Di Động - Mua Online Hàng Chuẩn Giá Tốt</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        :root {
+            --tgdd-red: #d70018;
+            --tgdd-yellow: #ffd700;
+            --tgdd-gray: #888;
+            --tgdd-light-gray: #f5f5f5;
+            --tgdd-border: #e0e0e0;
+            --text-primary: #333;
+            --text-secondary: #666;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--tgdd-light-gray);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-primary);
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .header-top {
+            background: var(--tgdd-red);
+            color: white;
+            padding: 0.75rem 0;
+        }
+
+        .header-top-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .location-info {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .header-bottom {
+            background: white;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--tgdd-border);
+        }
+
+        .header-bottom-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .logo-brand {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--tgdd-red);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            white-space: nowrap;
+        }
+
+        .logo-brand:hover {
+            color: #b80015;
+        }
+
+        .search-container {
+            flex: 1;
+            display: flex;
+            gap: 0.5rem;
+            min-width: 200px;
+        }
+
+        .search-container input {
+            flex: 1;
+            padding: 0.7rem 1rem;
+            border: 1px solid var(--tgdd-border);
+            border-radius: 6px 0 0 6px;
+            font-size: 0.9rem;
+        }
+
+        .search-container button {
+            background: var(--tgdd-yellow);
+            color: var(--tgdd-red);
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 0 6px 6px 0;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .search-container button:hover {
+            background: #ffc700;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .header-action-item {
+            color: var(--text-primary);
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.2rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .header-action-item:hover {
+            color: var(--tgdd-red);
+        }
+
+        .header-action-item i {
+            font-size: 1.4rem;
+        }
+
+        /* Category Navigation */
+        .category-nav {
+            background: white;
+            border-bottom: 1px solid var(--tgdd-border);
+            padding: 0;
+        }
+
+        .category-nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            overflow-x: auto;
+        }
+
+        .nav-link {
+            padding: 0.75rem 1rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-link:hover {
+            color: var(--tgdd-red);
+            border-bottom-color: var(--tgdd-yellow);
+        }
+
+        /* Flash Sale */
+        .flash-sale-section {
+            background: linear-gradient(135deg, #ffe0e0 0%, #fff8f0 100%);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+
+        .flash-sale-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .flash-sale-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            color: var(--tgdd-red);
+            font-weight: bold;
+        }
+
+        .flash-sale-title i {
+            font-size: 2rem;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .timer-slots-container {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .timer-slot {
+            background: white;
+            padding: 0.8rem 1.2rem;
+            border-radius: 6px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .timer-slot:hover,
+        .timer-slot.active {
+            background: var(--tgdd-red);
+            color: white;
+            border-color: var(--tgdd-red);
+        }
+
+        .slot-time {
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--tgdd-red);
+        }
+
+        .timer-slot.active .slot-time {
+            color: white;
+        }
+
+        .slot-status {
+            font-size: 0.75rem;
+            color: var(--tgdd-gray);
+            margin-top: 0.2rem;
+        }
+
+        .timer-slot.active .slot-status {
+            color: #ffd700;
+        }
+
+        .countdown {
+            font-size: 1.8rem;
+            color: var(--tgdd-red);
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 0.1em;
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 140px;
+            background: var(--tgdd-light-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .flashsale-badge {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            background: var(--tgdd-red);
+            color: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 3px;
+            font-size: 0.65rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+            z-index: 5;
+        }
+
+        .discount-badge {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: var(--tgdd-yellow);
+            color: var(--tgdd-red);
+            font-weight: bold;
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.7rem;
+        }
+
+        .product-info {
+            padding: 0.8rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-name {
+            font-size: 0.8rem;
+            color: var(--text-primary);
+            margin-bottom: 0.3rem;
+            font-weight: 500;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: 2rem;
+        }
+
+        .product-category {
+            font-size: 0.7rem;
+            color: var(--tgdd-gray);
+            margin-bottom: 0.3rem;
+        }
+
+        .product-rating {
+            font-size: 0.7rem;
+            color: #ffc107;
+            margin-bottom: 0.3rem;
+        }
+
+        .price-container {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            margin-bottom: 0.3rem;
+            font-size: 0.75rem;
+        }
+
+        .price-current {
+            font-weight: bold;
+            color: var(--tgdd-red);
+            font-size: 0.9rem;
+        }
+
+        .price-original {
+            color: var(--tgdd-gray);
+            text-decoration: line-through;
+        }
+
+        .product-sold {
+            font-size: 0.7rem;
+            color: var(--tgdd-gray);
+            margin-bottom: 0.5rem;
+        }
+
+        .buy-btn {
+            background: var(--tgdd-red);
+            color: white;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .buy-btn:hover {
+            background: #b80015;
+        }
+
+        /* Recommendation Section */
+        .recommendation-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title i {
+            color: var(--tgdd-red);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-bottom-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .search-container {
+                width: 100%;
+                order: 3;
+            }
+
+            .header-actions {
+                width: 100%;
+                justify-content: space-around;
+                order: 4;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 0.8rem;
+            }
+
+            .flash-sale-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .timer-slots-container {
+                width: 100%;
+            }
+        }
+
+        /* Footer */
+        footer {
+            background: #333;
+            color: white;
+            margin-top: 3rem;
+            border-top: 3px solid var(--tgdd-red);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h4 {
+            color: var(--tgdd-yellow);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section ul li a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 0.85rem;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--tgdd-yellow);
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-logo i {
+            font-size: 1.8rem;
+            color: var(--tgdd-red);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding: 1.5rem;
+            border-top: 1px solid #555;
+            background: #2a2a2a;
+        }
+
+        .footer-bottom p {
+            margin: 0.3rem 0;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Top -->
+    <div class="header-top">
+        <div class="header-top-content">
+            <div class="location-info">
+                <i class="fas fa-map-marker-alt"></i> Hồ Chí Minh
+            </div>
+            <div>Gọi mua: 1900 232 460 | Liên hệ khác: 1800 1062</div>
+        </div>
+    </div>
+
+    <!-- Header Bottom with Search -->
+    <div class="header-bottom">
+        <div class="header-bottom-content">
+            <a href="/" class="logo-brand">
+                <i class="fas fa-mobile-alt"></i> Thế Giới Di Động
+            </a>
+            <div class="search-container">
+                <input type="text" placeholder="Tìm kiếm sản phẩm...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            <div class="header-actions">
+                <a href="#" class="header-action-item">
+                    <i class="fas fa-user-circle"></i> Tài khoản
+                </a>
+                <a href="#" class="header-action-item">
+                    <i class="fas fa-shopping-cart"></i> Giỏ hàng
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Navigation -->
+    <div class="category-nav">
+        <div class="category-nav-content">
+            <a href="/products" class="nav-link">
+                <i class="fas fa-mobile-alt"></i> Điện Thoại
+            </a>
+            <a href="/products" class="nav-link">
+                <i class="fas fa-laptop"></i> Laptop
+            </a>
+            <a href="/categories" class="nav-link">
+                <i class="fas fa-list"></i> Danh Mục
+            </a>
+            <a href="/orders" class="nav-link">
+                <i class="fas fa-shopping-bag"></i> Đơn Hàng
+            </a>
+        </div>
+    </div>
+
+    <main>
+        <!-- Flash Sale Section -->
+        <div class="flash-sale-section">
+            <div class="flash-sale-header">
+                <div class="flash-sale-title">
+                    <i class="fas fa-fire"></i> KHUYẾN MÃI XUYÊN TẾT
+                </div>
+                <div class="countdown">Chỉ còn: <span id="timer">02:30:45</span></div>
+            </div>
+
+            <!-- Timer Slots -->
+            <div class="timer-slots-container">
+                <div class="timer-slot active">
+                    <div class="slot-time">09:00</div>
+                    <div class="slot-status">Đang diễn ra</div>
+                </div>
+                <div class="timer-slot">
+                    <div class="slot-time">12:00</div>
+                    <div class="slot-status">Sắp diễn ra</div>
+                </div>
+                <div class="timer-slot">
+                    <div class="slot-time">15:00</div>
+                    <div class="slot-status">Sắp diễn ra</div>
+                </div>
+                <div class="timer-slot">
+                    <div class="slot-time">18:00</div>
+                    <div class="slot-status">Sắp diễn ra</div>
+                </div>
+            </div>
+
+            <!-- Product Grid for Flash Sale -->
+            <div class="product-grid">
+                <div class="product-card" th:each="product : ${#lists.subList(products, 0, #lists.size(products) > 8 ? 8 : #lists.size(products))}">
+                    <div class="product-image">
+                        <i class="fas fa-image" style="font-size: 3rem; color: #ddd;"></i>
+                        <div class="flashsale-badge">
+                            <i class="fas fa-bolt"></i> FLASH
+                        </div>
+                        <div class="discount-badge" th:if="${product.discount} > 0" th:text="'-' + ${product.discount} + '%'">-20%</div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name" th:text="${product.name}">Sản phẩm mẫu</div>
+                        <div class="product-category" th:text="${product.category.name}">Điện thoại</div>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i> 4.9 (230 đánh giá)
+                        </div>
+                        <div class="price-container">
+                            <span class="price-current" th:text="'₫' + ${#numbers.formatInteger(product.price, 0, 'DEFAULT')}">12.700.000₫</span>
+                            <span class="price-original" th:if="${product.originalPrice} > 0" th:text="'₫' + ${#numbers.formatInteger(product.originalPrice, 0, 'DEFAULT')}">15.700.000₫</span>
+                        </div>
+                        <div class="product-sold">Đã bán: 125</div>
+                        <button class="buy-btn">Mua Ngay</button>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 1rem;">
+                <a href="/products" style="color: var(--tgdd-red); text-decoration: none; font-weight: bold;">
+                    Xem thêm sản phẩm <i class="fas fa-chevron-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Recommendation Section -->
+        <div class="recommendation-section">
+            <div class="section-title">
+                <i class="fas fa-lightbulb"></i> GỢI Ý CHO BẠN
+            </div>
+            <div class="product-grid">
+                <div class="product-card" th:each="product : ${#lists.subList(products, 8, #lists.size(products) > 16 ? 16 : #lists.size(products))}">
+                    <div class="product-image">
+                        <i class="fas fa-image" style="font-size: 3rem; color: #ddd;"></i>
+                        <div class="discount-badge" th:if="${product.discount} > 0" th:text="'-' + ${product.discount} + '%'">-15%</div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name" th:text="${product.name}">Sản phẩm mẫu</div>
+                        <div class="product-category" th:text="${product.category.name}">Điện thoại</div>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i> 4.8 (150 đánh giá)
+                        </div>
+                        <div class="price-container">
+                            <span class="price-current" th:text="'₫' + ${#numbers.formatInteger(product.price, 0, 'DEFAULT')}">10.990.000₫</span>
+                            <span class="price-original" th:if="${product.originalPrice} > 0" th:text="'₫' + ${#numbers.formatInteger(product.originalPrice, 0, 'DEFAULT')}">13.000.000₫</span>
+                        </div>
+                        <div class="product-sold">Đã bán: 87</div>
+                        <button class="buy-btn">Mua Ngay</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <i class="fas fa-mobile-alt"></i>
+                    <div>
+                        <div style="font-weight: bold; color: white;">Thế Giới Di Động</div>
+                        <div style="font-size: 0.8rem; color: #ccc;">Mua Online - Hàng Chuẩn - Giá Tốt</div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4><i class="fas fa-info-circle"></i> VỀ CÔNG TY</h4>
+                <ul>
+                    <li><a href="#">Giới thiệu công ty</a></li>
+                    <li><a href="#">Tuyển dụng</a></li>
+                    <li><a href="#">Liên hệ & khiếu nại</a></li>
+                    <li><a href="#">Hệ thống siêu thị</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4><i class="fas fa-headset"></i> HỖ TRỢ KHÁCH HÀNG</h4>
+                <ul>
+                    <li><a href="#">Gọi mua: 1900 232 460</a></li>
+                    <li><a href="#">Khiếu nại: 1800 1062</a></li>
+                    <li><a href="#">Bảo hành: 1900 232 464</a></li>
+                    <li><a href="#">Tìm hiểu trả chậm</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4><i class="fas fa-link"></i> LIÊN KẾT NHANH</h4>
+                <ul>
+                    <li><a href="#">Danh sách sản phẩm</a></li>
+                    <li><a href="#">Chương trình khuyến mãi</a></li>
+                    <li><a href="#">Chính sách bảo hành</a></li>
+                    <li><a href="#">Điều khoản sử dụng</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4><i class="fas fa-share-alt"></i> MẠNG XÃ HỘI</h4>
+                <ul>
+                    <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+                    <li><a href="#"><i class="fab fa-youtube"></i> YouTube</a></li>
+                    <li><a href="#"><i class="fab fa-zalo"></i> Zalo</a></li>
+                    <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p><strong>© 2026 Công Ty Cổ Phần Đầu Tư Điện Máy Xanh</strong></p>
+            <p>GPDKKD: 0303217354 | Địa chỉ: 128 Trần Quang Khải, TP. Hồ Chí Minh</p>
+            <p>Email: hotro@thegioididong.com | Điện thoại: 028 38125960</p>
+        </div>
+    </footer>
+
+    <!-- Timer Script -->
+    <script>
+        function updateTimer() {
+            const timerElement = document.getElementById('timer');
+            let seconds = 9045; // 02:30:45 in seconds
+
+            setInterval(() => {
+                seconds--;
+                if (seconds < 0) seconds = 9045;
+
+                const hours = Math.floor(seconds / 3600);
+                const minutes = Math.floor((seconds % 3600) / 60);
+                const secs = seconds % 60;
+
+                timerElement.textContent = 
+                    String(hours).padStart(2, '0') + ':' +
+                    String(minutes).padStart(2, '0') + ':' +
+                    String(secs).padStart(2, '0');
+            }, 1000);
+        }
+
+        document.addEventListener('DOMContentLoaded', updateTimer);
+
+        // Timer slot click handler
+        document.querySelectorAll('.timer-slot').forEach((slot, index) => {
+            slot.addEventListener('click', function() {
+                document.querySelectorAll('.timer-slot').forEach(s => s.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+    <script src="/js/script.js"></script>
+</body>
+</html>
+
+
+

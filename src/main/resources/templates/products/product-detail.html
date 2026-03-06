@@ -1,0 +1,375 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${product.name} + ' - Chi tiet san pham'">Chi tiet san pham</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .layout {
+            display: grid;
+            grid-template-columns: 1.05fr 1fr;
+            gap: 14px;
+        }
+
+        .box {
+            padding: 14px;
+        }
+
+        .gallery {
+            display: grid;
+            gap: 10px;
+        }
+
+        .hero-image {
+            min-height: 360px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            font-size: 76px;
+        }
+
+        .thumb-row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+        }
+
+        .thumb {
+            height: 64px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            background: #f9fafb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            font-size: 20px;
+        }
+
+        .thumb.active {
+            border-color: #d70018;
+            background: #fff5f5;
+            color: #d70018;
+        }
+
+        .name {
+            margin: 0 0 8px;
+            font-size: 30px;
+            line-height: 1.1;
+            font-weight: 900;
+            color: #111827;
+        }
+
+        .meta {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            color: #6b7280;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .meta b {
+            color: #111827;
+        }
+
+        .price-box {
+            border: 1px solid #fecaca;
+            background: #fff1f2;
+            border-radius: 12px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .price-main {
+            font-size: 34px;
+            font-weight: 900;
+            color: #d70018;
+            line-height: 1;
+        }
+
+        .price-old {
+            color: #9ca3af;
+            text-decoration: line-through;
+            font-size: 15px;
+            margin-left: 8px;
+        }
+
+        .chips {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .chip {
+            border: 1px solid #d1d5db;
+            border-radius: 999px;
+            padding: 6px 10px;
+            background: #fff;
+            color: #374151;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .chip.active {
+            border-color: #d70018;
+            color: #d70018;
+            background: #fff5f5;
+        }
+
+        .promo-list {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            background: #fff;
+            padding: 10px;
+            margin-bottom: 12px;
+            font-size: 13px;
+        }
+
+        .promo-list h4 {
+            margin: 0 0 6px;
+            font-size: 14px;
+            font-weight: 900;
+        }
+
+        .promo-list ul {
+            margin: 0;
+            padding-left: 18px;
+            color: #374151;
+            display: grid;
+            gap: 4px;
+        }
+
+        .qty-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .qty-row input {
+            width: 96px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            padding: 9px 10px;
+            font-size: 14px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .actions form {
+            margin: 0;
+        }
+
+        .desc {
+            margin-top: 10px;
+            color: #4b5563;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .review-section {
+            margin-top: 14px;
+        }
+
+        .review-form {
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+
+        .review-item {
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        .review-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .review-stars {
+            color: #f59e0b;
+            font-size: 13px;
+            font-weight: 800;
+        }
+        .page-alert {
+            border-radius: 10px;
+            padding: 10px 12px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .page-alert.success {
+            background: #ecfdf3;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+        .page-alert.error {
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        @media (max-width: 980px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+            .thumb-row {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body class="tgdd-page-body">
+<th:block th:replace="~{fragments/tgdd-shell :: siteHeader}"></th:block>
+
+<main class="tgdd-main">
+    <div class="tgdd-container">
+        <div class="tgdd-breadcrumb">
+            <a href="/">Trang chu</a> <span>/</span>
+            <a href="/products">San pham</a> <span>/</span>
+            <span th:text="${product.name}">Chi tiet</span>
+        </div>
+
+        <div th:if="${successMessage}" class="page-alert success" th:text="${successMessage}"></div>
+        <div th:if="${errorMessage}" class="page-alert error" th:text="${errorMessage}"></div>
+
+        <section class="layout">
+            <div class="tgdd-card box gallery">
+                <div class="hero-image"><i class="fas fa-image"></i></div>
+                <div class="thumb-row">
+                    <div class="thumb active"><i class="fas fa-image"></i></div>
+                    <div class="thumb"><i class="fas fa-image"></i></div>
+                    <div class="thumb"><i class="fas fa-image"></i></div>
+                    <div class="thumb"><i class="fas fa-image"></i></div>
+                    <div class="thumb"><i class="fas fa-image"></i></div>
+                </div>
+            </div>
+
+            <div class="tgdd-card box">
+                <h1 class="name" th:text="${product.name}">Ten san pham</h1>
+                <div class="meta">
+                    <span>Danh muc: <b th:text="${product.category != null ? product.category.name : 'Khong danh muc'}">Danh muc</b></span>
+                    <span>|</span>
+                    <span>Ton kho: <b th:text="${product.quantity}">0</b></span>
+                    <span>|</span>
+                    <span><b th:text="${totalReviews}">0</b> danh gia</span>
+                    <span>|</span>
+                    <span><b th:text="${#numbers.formatDecimal(averageRating, 1, 1)}">0.0</b> sao</span>
+                </div>
+
+                <div class="price-box">
+                    <span class="price-main" th:text="'VND ' + ${#numbers.formatInteger(product.price, 0, 'DEFAULT')}">VND 0</span>
+                    <span class="price-old" th:if="${product.discount > 0}"
+                          th:text="'VND ' + ${#numbers.formatInteger(product.price / (1 - product.discount / 100), 0, 'DEFAULT')}">VND 0</span>
+                </div>
+
+                <div class="chips">
+                    <span class="chip active">Bao hanh chinh hang 12 thang</span>
+                    <span class="chip">Doi tra trong 30 ngay</span>
+                    <span class="chip">Giao nhanh trong 2 gio</span>
+                </div>
+
+                <div class="promo-list">
+                    <h4>Khuyen mai dang ap dung</h4>
+                    <ul>
+                        <li>Giam them 300.000 khi thanh toan qua vi dien tu.</li>
+                        <li>Tra gop 0% qua the tin dung.</li>
+                        <li>Tang phieu mua phu kien gia tri 200.000.</li>
+                    </ul>
+                </div>
+
+                <div class="qty-row">
+                    <form th:action="@{/cart/add/{id}(id=${product.id})}" method="post" style="display:flex; gap:8px; flex-wrap:wrap;">
+                        <input type="number" name="quantity" value="1" min="1" th:max="${product.quantity}">
+                        <button class="tgdd-btn tgdd-btn-primary" type="submit">
+                            <i class="fas fa-cart-plus"></i> Them vao gio
+                        </button>
+                    </form>
+                    <form th:action="@{/wishlist/add/{id}(id=${product.id})}" method="post">
+                        <button class="tgdd-btn tgdd-btn-light" type="submit">
+                            <i class="fas fa-heart"></i>
+                            <span th:text="${isInWishlist} ? 'Da yeu thich' : 'Yeu thich'">Yeu thich</span>
+                        </button>
+                    </form>
+                </div>
+
+                <div class="actions">
+                    <button class="tgdd-btn tgdd-btn-primary" type="button"><i class="fas fa-bolt"></i> Mua ngay</button>
+                    <button class="tgdd-btn tgdd-btn-light" type="button"><i class="fas fa-comments"></i> Tu van tra gop</button>
+                </div>
+
+                <p class="desc" th:text="${product.description}">Mo ta san pham</p>
+            </div>
+        </section>
+
+        <section class="review-section">
+            <div class="tgdd-card review-form">
+                <h3 style="margin:0 0 10px; font-size:20px;">Danh gia san pham</h3>
+                <form th:action="@{/products/{id}/add-review(id=${product.id})}" method="post" th:object="${review}">
+                    <div class="tgdd-form-grid">
+                        <div class="tgdd-form-group">
+                            <label>Diem danh gia</label>
+                            <select th:field="*{rating}">
+                                <option value="">-- Chon --</option>
+                                <option value="5">5</option>
+                                <option value="4">4</option>
+                                <option value="3">3</option>
+                                <option value="2">2</option>
+                                <option value="1">1</option>
+                            </select>
+                        </div>
+                        <div class="tgdd-form-group">
+                            <label>Tieu de</label>
+                            <input type="text" th:field="*{title}">
+                        </div>
+                    </div>
+                    <div class="tgdd-form-group">
+                        <label>Noi dung</label>
+                        <textarea rows="4" th:field="*{comment}"></textarea>
+                    </div>
+                    <button class="tgdd-btn tgdd-btn-primary" type="submit"><i class="fas fa-paper-plane"></i> Gui danh gia</button>
+                </form>
+            </div>
+
+            <div th:if="${#lists.isEmpty(reviews)}" class="tgdd-card tgdd-empty">Chua co danh gia nao.</div>
+
+            <div th:each="review : ${reviews}" class="tgdd-card review-item">
+                <div class="review-head">
+                    <strong th:text="${review.user != null ? review.user.fullName : 'Nguoi dung'}">Nguoi dung</strong>
+                    <span class="review-stars">
+                        <i class="fas fa-star" th:repeat="i : ${#numbers.sequence(1, review.rating)}"></i>
+                    </span>
+                </div>
+                <div style="font-weight:800; margin-bottom:4px;" th:text="${review.title}">Tieu de</div>
+                <div style="color:#374151;" th:text="${review.comment}">Noi dung</div>
+                <small style="color:#6b7280;"
+                       th:text="${review.createdAt != null ? #temporals.format(review.createdAt, 'dd/MM/yyyy HH:mm') : ''}"></small>
+            </div>
+        </section>
+    </div>
+</main>
+
+<th:block th:replace="~{fragments/tgdd-shell :: siteFooter}"></th:block>
+    <script src="/js/script.js"></script>
+</body>
+</html>
+
+
+
+
+
+

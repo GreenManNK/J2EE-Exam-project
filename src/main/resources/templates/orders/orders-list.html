@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Don Hang</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .page-alert {
+            border-radius: 10px;
+            padding: 10px 12px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .page-alert.success {
+            background: #ecfdf3;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+    </style>
+</head>
+<body class="tgdd-page-body">
+<th:block th:replace="~{fragments/tgdd-shell :: siteHeader}"></th:block>
+
+<main class="tgdd-main">
+    <div class="tgdd-container">
+        <div class="tgdd-page-head">
+            <h1 class="tgdd-page-title"><i class="fas fa-file-invoice"></i> Quan ly don hang</h1>
+            <a class="tgdd-btn tgdd-btn-primary" href="/orders/add"><i class="fas fa-plus"></i> Tao don moi</a>
+        </div>
+
+        <div th:if="${successMessage}" class="page-alert success" th:text="${successMessage}"></div>
+
+        <div class="tgdd-card" style="padding: 12px;">
+            <table class="tgdd-table">
+                <thead>
+                <tr>
+                    <th>Ma don</th>
+                    <th>Khach hang</th>
+                    <th>Dien thoai</th>
+                    <th>Tong tien</th>
+                    <th>Trang thai</th>
+                    <th style="width:220px;">Hanh dong</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="order : ${orders}">
+                    <td th:text="'#' + ${order.id}">#1</td>
+                    <td th:text="${order.customerName}">Khach</td>
+                    <td th:text="${order.phone}">0900</td>
+                    <td th:text="'₫' + ${#numbers.formatInteger(order.totalPrice, 0, 'DEFAULT')}">₫0</td>
+                    <td th:text="${order.status}">pending</td>
+                    <td style="display:flex; gap:8px;">
+                        <a class="tgdd-btn tgdd-btn-light" th:href="@{/orders/edit/{id}(id=${order.id})}">
+                            <i class="fas fa-pen"></i> Sua
+                        </a>
+                        <a class="tgdd-btn tgdd-btn-primary" th:href="@{/orders/delete/{id}(id=${order.id})}"
+                           onclick="return confirm('Ban chac chan muon xoa don hang nay?')">
+                            <i class="fas fa-trash"></i> Xoa
+                        </a>
+                    </td>
+                </tr>
+                <tr th:if="${orders.isEmpty()}">
+                    <td colspan="6" class="tgdd-empty">Chua co don hang nao.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<th:block th:replace="~{fragments/tgdd-shell :: siteFooter}"></th:block>
+    <script src="/js/script.js"></script>
+</body>
+</html>
+
+
+
+
+
+

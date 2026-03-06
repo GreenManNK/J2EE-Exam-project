@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sua San Pham</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="tgdd-page-body">
+<th:block th:replace="~{fragments/tgdd-shell :: siteHeader}"></th:block>
+
+<main class="tgdd-main">
+    <div class="tgdd-container" style="max-width: 920px;">
+        <div class="tgdd-page-head">
+            <h1 class="tgdd-page-title"><i class="fas fa-pen"></i> Sua san pham</h1>
+            <a class="tgdd-btn tgdd-btn-light" href="/products"><i class="fas fa-arrow-left"></i> Quay lai</a>
+        </div>
+
+        <div class="tgdd-card" style="padding: 16px;">
+            <form th:action="@{/products/edit/{id}(id=${product.id})}" th:object="${product}" method="post">
+                <div class="tgdd-form-group">
+                    <label for="name">Ten san pham *</label>
+                    <input id="name" type="text" th:field="*{name}" required>
+                </div>
+
+                <div class="tgdd-form-grid">
+                    <div class="tgdd-form-group">
+                        <label for="category">Danh muc *</label>
+                        <select id="category" th:field="*{category}" required>
+                            <option value="">-- Chon danh muc --</option>
+                            <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}"></option>
+                        </select>
+                    </div>
+                    <div class="tgdd-form-group">
+                        <label for="price">Gia ban *</label>
+                        <input id="price" type="number" min="0" th:field="*{price}" required>
+                    </div>
+                </div>
+
+                <div class="tgdd-form-grid">
+                    <div class="tgdd-form-group">
+                        <label for="quantity">So luong *</label>
+                        <input id="quantity" type="number" min="0" th:field="*{quantity}" required>
+                    </div>
+                    <div class="tgdd-form-group">
+                        <label for="discount">Chiet khau (%)</label>
+                        <input id="discount" type="number" min="0" max="100" th:field="*{discount}">
+                    </div>
+                </div>
+
+                <div class="tgdd-form-group">
+                    <label for="description">Mo ta</label>
+                    <textarea id="description" rows="4" th:field="*{description}"></textarea>
+                </div>
+
+                <div class="tgdd-form-group">
+                    <label style="display:flex; gap:8px; align-items:center;">
+                        <input type="checkbox" style="width:18px; height:18px; accent-color:#d70018;" th:field="*{promotional}">
+                        Bat tab san pham khuyen mai (khong bat thi hien o nhom thuong)
+                    </label>
+                </div>
+
+                <button class="tgdd-btn tgdd-btn-primary" type="submit">
+                    <i class="fas fa-save"></i> Cap nhat san pham
+                </button>
+            </form>
+        </div>
+    </div>
+</main>
+
+<th:block th:replace="~{fragments/tgdd-shell :: siteFooter}"></th:block>
+    <script src="/js/script.js"></script>
+</body>
+</html>
+
+
+
+
+
+

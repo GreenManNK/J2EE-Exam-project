@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Muc</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="tgdd-page-body">
+<th:block th:replace="~{fragments/tgdd-shell :: siteHeader}"></th:block>
+
+<main class="tgdd-main">
+    <div class="tgdd-container">
+        <div class="tgdd-page-head">
+            <h1 class="tgdd-page-title"><i class="fas fa-list"></i> Quan ly danh muc</h1>
+            <a class="tgdd-btn tgdd-btn-primary" href="/categories/add"><i class="fas fa-plus"></i> Them danh muc</a>
+        </div>
+
+        <div class="tgdd-card" style="padding: 12px;">
+            <table class="tgdd-table">
+                <thead>
+                <tr>
+                    <th style="width:80px;">ID</th>
+                    <th style="width:170px;">Icon</th>
+                    <th>Ten danh muc</th>
+                    <th style="width:210px;">Hanh dong</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="category : ${categories}">
+                    <td th:text="${category.id}">1</td>
+                    <td>
+                        <i th:class="${#strings.isEmpty(category.icon) ? 'fas fa-list' : category.icon}" style="width:20px; color:#d70018;"></i>
+                        <span th:text="${#strings.isEmpty(category.icon) ? 'fas fa-list' : category.icon}">fas fa-list</span>
+                    </td>
+                    <td th:text="${category.name}">Dien thoai</td>
+                    <td style="display:flex; gap:8px;">
+                        <a class="tgdd-btn tgdd-btn-light" th:href="@{/categories/edit/{id}(id=${category.id})}">
+                            <i class="fas fa-pen"></i> Sua
+                        </a>
+                        <a class="tgdd-btn tgdd-btn-primary" th:href="@{/categories/delete/{id}(id=${category.id})}"
+                           onclick="return confirm('Ban chac chan muon xoa danh muc nay?')">
+                            <i class="fas fa-trash"></i> Xoa
+                        </a>
+                    </td>
+                </tr>
+                <tr th:if="${categories.isEmpty()}">
+                    <td colspan="4" class="tgdd-empty">Chua co danh muc nao.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<th:block th:replace="~{fragments/tgdd-shell :: siteFooter}"></th:block>
+    <script src="/js/script.js"></script>
+</body>
+</html>
+
+
+
+
+
+

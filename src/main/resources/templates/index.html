@@ -1,0 +1,292 @@
+﻿<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>thegioididong.com - Điện thoại, Laptop, Phụ kiện, Đồng hồ chính hãng</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="promo-strip">
+        <a href="#">Gấp đôi quà x2 tình yêu - Đồng hồ chỉ từ 83.000đ</a>
+    </div>
+
+    <div class="sticky-banner sticky-banner--left">
+        <a href="#"><img src="https://cdnv2.tgdd.vn/mwg-static/tgdd/Banner/57/ce/57ce7cd2a7a892afd7f0e1826f9549fd.png" alt="Banner trái"></a>
+    </div>
+    <div class="sticky-banner sticky-banner--right">
+        <a href="#"><img src="https://cdnv2.tgdd.vn/mwg-static/tgdd/Banner/d8/ab/d8ab342d5f6f12580593ebc2adb9b663.png" alt="Banner phải"></a>
+    </div>
+
+    <div class="top-banner">
+        <div class="container--fluid">
+            <a href="#"><img src="https://cdnv2.tgdd.vn/mwg-static/tgdd/Banner/25/28/2528971e6119a5d6b12f5e9b03c11131.png" alt="Top Banner"></a>
+        </div>
+    </div>
+
+    <header class="header">
+        <div class="container">
+            <div class="header__top">
+                <a href="/" class="header__logo">
+                    <img src="https://cdnv2.tgdd.vn/webmwg/2024/ContentMwg/images/lunar_new_year/2026/TGDD/logo-dt.png" alt="The Gioi Di Dong" class="header__logo-img">
+                </a>
+
+                <div class="header__search">
+                    <input type="text" class="header__search-input" placeholder="Bạn tìm gì hôm nay?">
+                    <button class="header__search-btn" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+
+                <div class="header__actions">
+                    <a class="header__action-item" th:if="${!loggedIn}" href="/auth/login"><i class="fa-regular fa-user"></i> Đăng nhập</a>
+                    <a class="header__action-item" th:if="${loggedIn}" href="/auth/logout">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        Đăng xuất (<span th:text="${currentUsername}">user</span>)
+                    </a>
+                    <a class="header__action-item" href="/cart">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        Giỏ hàng<span th:if="${cartItemCount > 0}" th:text="${' (' + cartItemCount + ')'}"></span>
+                    </a>
+                    <a class="header__action-item" href="#"><i class="fa-solid fa-location-dot"></i> Hồ Chí Minh</a>
+                </div>
+            </div>
+
+            <nav class="main-menu">
+                <ul class="main-menu__list">
+                    <li class="main-menu__item">
+                        <a href="/products" class="main-menu__link"><i class="fa-solid fa-mobile-screen-button"></i> Điện thoại</a>
+                    </li>
+                    <li class="main-menu__item">
+                        <a href="/products" class="main-menu__link"><i class="fa-solid fa-laptop"></i> Laptop</a>
+                    </li>
+                    <li class="main-menu__item main-menu__item--accessories" id="accessoriesMenuItem">
+                        <a href="/products"
+                           class="main-menu__link main-menu__link--caret"
+                           aria-expanded="false"
+                           aria-controls="accessoriesDropdown"
+                           aria-haspopup="true">
+                            <i class="fa-solid fa-headphones"></i> Phụ kiện
+                        </a>
+
+                        <div class="mega-menu" id="accessoriesDropdown" role="menu" aria-label="Danh mục phụ kiện">
+                            <div class="mega-menu__body">
+                                <div class="mega-menu__columns">
+                                    <section class="mega-menu__group">
+                                        <h4>Phụ kiện di động</h4>
+                                        <div class="mega-menu__grid">
+                                            <a href="/products" class="mega-menu__item"><img class="mega-menu__thumb" src="https://cdn.tgdd.vn/content/phu-kien-24x24.png" alt=""><span>Sạc dự phòng</span></a>
+                                            <a href="/products" class="mega-menu__item"><img class="mega-menu__thumb" src="https://cdn.tgdd.vn/content/phu-kien-24x24.png" alt=""><span>Sạc, cáp</span></a>
+                                            <a href="/products" class="mega-menu__item"><img class="mega-menu__thumb" src="https://cdn.tgdd.vn/content/phonne-24x24.png" alt=""><span>Ốp lưng điện thoại</span></a>
+                                            <a href="/products" class="mega-menu__item"><img class="mega-menu__thumb" src="https://cdn.tgdd.vn/content/phonne-24x24.png" alt=""><span>Dán màn hình</span></a>
+                                            <a href="/products" class="mega-menu__item"><img class="mega-menu__thumb" src="https://cdn.tgdd.vn/content/smartwatch-24x24.png" alt=""><span>Sim, thẻ nhớ</span></a>
+                                            <a href="/products" class="mega-menu__item"><img class="mega-menu__thumb" src="https://cdn.tgdd.vn/content/PC-24x24.png" alt=""><span>Router - Thiết bị mạng</span></a>
+                                            <a href="/products" class="mega-menu__item"><img class="mega-menu__thumb" src="https://cdn.tgdd.vn/content/phu-kien-24x24.png" alt=""><span>Phụ kiện gaming</span></a>
+                                            <a href="/products" class="mega-menu__item"><img class="mega-menu__thumb" src="https://cdn.tgdd.vn/content/phu-kien-24x24.png" alt=""><span>Gậy, tripod</span></a>
+                                        </div>
+                                    </section>
+
+                                    <section class="mega-menu__group">
+                                        <h4>Phụ kiện laptop, PC</h4>
+                                        <div class="mega-menu__grid">
+                                            <a href="/products" class="mega-menu__item"><img class="mega-menu__thumb" src="https://cdn.tgdd.vn/content/laptop-24x24.png" alt=""><span>Bàn phím</span></a>
+                                            <a href="/products" class="mega-menu__item"><img class="mega-menu__thumb" src="https://cdn.tgdd.vn/content/laptop-24x24.png" alt=""><span>Chuột máy tính</span></a>
+                                            <a href="/products" class="mega-menu__item"><img class="mega-menu__thumb" src="https://cdn.tgdd.vn/content/PC-24x24.png" alt=""><span>Ổ cứng di động</span></a>
+                                            <a href="/products" class="mega-menu__item"><img class="mega-menu__thumb" src="https://cdn.tgdd.vn/content/PC-24x24.png" alt=""><span>USB, thẻ nhớ</span></a>
+                                            <a href="/products" class="mega-menu__item"><img class="mega-menu__thumb" src="https://cdn.tgdd.vn/content/PC-24x24.png" alt=""><span>Hub, cáp chuyển đổi</span></a>
+                                            <a href="/products" class="mega-menu__item"><img class="mega-menu__thumb" src="https://cdn.tgdd.vn/content/PC-24x24.png" alt=""><span>Máy in</span></a>
+                                            <a href="/products" class="mega-menu__item"><img class="mega-menu__thumb" src="https://cdn.tgdd.vn/content/laptop-24x24.png" alt=""><span>Balo, túi chống sốc</span></a>
+                                            <a href="/products" class="mega-menu__item"><img class="mega-menu__thumb" src="https://cdn.tgdd.vn/content/laptop-24x24.png" alt=""><span>Giá đỡ laptop</span></a>
+                                        </div>
+                                    </section>
+
+                                    <section class="mega-menu__group">
+                                        <h4>Thiết bị âm thanh & camera</h4>
+                                        <div class="mega-menu__grid">
+                                            <a href="/products" class="mega-menu__item"><img class="mega-menu__thumb" src="https://cdn.tgdd.vn/content/phu-kien-24x24.png" alt=""><span>Tai nghe Bluetooth</span></a>
+                                            <a href="/products" class="mega-menu__item"><img class="mega-menu__thumb" src="https://cdn.tgdd.vn/content/phu-kien-24x24.png" alt=""><span>Tai nghe chụp tai</span></a>
+                                            <a href="/products" class="mega-menu__item"><img class="mega-menu__thumb" src="https://cdn.tgdd.vn/content/phu-kien-24x24.png" alt=""><span>Micro</span></a>
+                                            <a href="/products" class="mega-menu__item"><img class="mega-menu__thumb" src="https://cdn.tgdd.vn/content/phu-kien-24x24.png" alt=""><span>Loa Bluetooth</span></a>
+                                            <a href="/products" class="mega-menu__item"><img class="mega-menu__thumb" src="https://cdn.tgdd.vn/content/phonne-24x24.png" alt=""><span>Camera hành trình</span></a>
+                                            <a href="/products" class="mega-menu__item"><img class="mega-menu__thumb" src="https://cdn.tgdd.vn/content/phonne-24x24.png" alt=""><span>Camera giám sát</span></a>
+                                            <a href="/products" class="mega-menu__item"><img class="mega-menu__thumb" src="https://cdn.tgdd.vn/content/phonne-24x24.png" alt=""><span>Camera 4G</span></a>
+                                            <a href="/products" class="mega-menu__item"><img class="mega-menu__thumb" src="https://cdn.tgdd.vn/content/PC-24x24.png" alt=""><span>Thiết bị lưu trữ</span></a>
+                                        </div>
+                                    </section>
+
+                                    <section class="mega-menu__group">
+                                        <h4>Danh mục trong dự án</h4>
+                                        <div class="mega-menu__grid">
+                                            <a class="mega-menu__item" th:each="category : ${categories}" th:href="@{/products(category=${category.id})}">
+                                                <i th:class="${#strings.isEmpty(category.icon) ? 'fa-solid fa-list' : category.icon}"></i>
+                                                <span th:text="${category.name}">Danh mục</span>
+                                            </a>
+                                        </div>
+                                    </section>
+                                </div>
+
+                                <aside class="mega-menu__promo">
+                                    <a href="/products">
+                                        <img src="https://cdnv2.tgdd.vn/mwg-static/tgdd/Banner/d8/ab/d8ab342d5f6f12580593ebc2adb9b663.png" alt="Khuyến mãi phụ kiện">
+                                    </a>
+                                </aside>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="main-menu__item">
+                        <a href="/products" class="main-menu__link"><i class="fa-solid fa-stopwatch"></i> Smartwatch</a>
+                    </li>
+                    <li class="main-menu__item">
+                        <a href="/products" class="main-menu__link"><i class="fa-regular fa-clock"></i> Đồng hồ</a>
+                    </li>
+                    <li class="main-menu__item">
+                        <a href="/products" class="main-menu__link"><i class="fa-solid fa-tablet-screen-button"></i> Tablet</a>
+                    </li>
+                    <li class="main-menu__item">
+                        <a href="/products" class="main-menu__link"><i class="fa-solid fa-arrows-rotate"></i> Máy cũ, Thu cũ</a>
+                    </li>
+                    <li class="main-menu__item">
+                        <a href="/products" class="main-menu__link"><i class="fa-solid fa-desktop"></i> Màn hình, Máy in</a>
+                    </li>
+                    <li class="main-menu__item">
+                        <a href="/products" class="main-menu__link"><i class="fa-solid fa-sim-card"></i> Sim, Thẻ cào</a>
+                    </li>
+                    <li class="main-menu__item">
+                        <a href="/orders" class="main-menu__link"><i class="fa-solid fa-file-invoice"></i> Đơn hàng</a>
+                    </li>
+                    <li class="main-menu__item">
+                        <a href="/admin" class="main-menu__link"><i class="fa-solid fa-user-gear"></i> Admin</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <section class="big-banner">
+                <div class="big-banner__top">
+                    <a href="#">
+                        <img src="https://cdnv2.tgdd.vn/mwg-static/tgdd/Banner/f2/e7/f2e7548a58710c27a7e9e78e878a695e.jpg" alt="Big Promotion" class="big-banner__img-top">
+                    </a>
+                </div>
+                <div class="big-banner__bottom">
+                    <a href="#" class="big-banner__item">
+                        <img src="https://cdnv2.tgdd.vn/mwg-static/tgdd/Banner/12/c6/12c60338494c1708fe45e8f602517800.jpg" alt="Sub Banner 1">
+                    </a>
+                    <a href="#" class="big-banner__item">
+                        <img src="https://cdnv2.tgdd.vn/mwg-static/tgdd/Banner/b4/a2/b4a2e300d8e9a48aabafb85e7170b5de.jpg" alt="Sub Banner 2">
+                    </a>
+                </div>
+            </section>
+
+            <section class="quick-links">
+                <ul>
+                    <li><a href="/products"><img src="https://cdn.tgdd.vn/content/phonne-24x24.png" alt="Điện thoại">Điện thoại</a></li>
+                    <li><a href="/products"><img src="https://cdn.tgdd.vn/content/laptop-24x24.png" alt="Laptop">Laptop</a></li>
+                    <li><a href="/products"><img src="https://cdn.tgdd.vn/content/tablet-24x24.png" alt="Tablet">Tablet</a></li>
+                    <li><a href="/products"><img src="https://cdn.tgdd.vn/content/phu-kien-24x24.png" alt="Phụ kiện">Phụ kiện</a></li>
+                    <li><a href="/products"><img src="https://cdn.tgdd.vn/content/smartwatch-24x24.png" alt="Smartwatch">Smartwatch</a></li>
+                    <li><a href="/products"><img src="https://cdn.tgdd.vn/content/watch-24x24.png" alt="Đồng hồ">Đồng hồ</a></li>
+                    <li><a href="/products"><img src="https://cdn.tgdd.vn/content/may-cu-24x24.png" alt="Máy cũ">Máy cũ</a></li>
+                    <li><a href="/products"><img src="https://cdn.tgdd.vn/content/PC-24x24.png" alt="PC, Máy in">PC, Máy in</a></li>
+                </ul>
+            </section>
+
+            <section class="flash-sale">
+                <div class="flash-sale__header">
+                    <h2 class="flash-sale__title">Giờ Vàng - Deal Sốc</h2>
+                    <div class="flash-sale__countdown">
+                        <span>Kết thúc trong:</span>
+                        <span class="countdown-box">01</span> :
+                        <span class="countdown-box">59</span> :
+                        <span class="countdown-box">30</span>
+                    </div>
+                </div>
+
+                <div class="empty-note" th:if="${#lists.isEmpty(promotionalProducts)}">Chưa có sản phẩm khuyến mãi.</div>
+                <div class="flash-sale__list" th:unless="${#lists.isEmpty(promotionalProducts)}">
+                    <a class="product-card"
+                       th:each="product : ${#lists.size(promotionalProducts) > 8 ? #lists.subList(promotionalProducts, 0, 8) : promotionalProducts}"
+                       th:href="@{/products/{id}(id=${product.id})}">
+                        <div class="product-card__img-wrapper">
+                            <div class="product-card__img-placeholder"><i class="fa-solid fa-box"></i></div>
+                        </div>
+                        <h3 class="product-card__title" th:text="${product.name}">Tên sản phẩm</h3>
+                        <span class="product-card__old-price" th:if="${product.discount > 0}"
+                              th:text="${#numbers.formatInteger(product.price + (product.price * product.discount / 100), 0, 'DEFAULT')} + 'đ'">0đ</span>
+                        <span class="product-card__discount" th:if="${product.discount > 0}" th:text="'-' + ${product.discount} + '%'">-10%</span>
+                        <span class="product-card__price" th:text="${#numbers.formatInteger(product.price, 0, 'DEFAULT')} + 'đ'">0đ</span>
+                    </a>
+                </div>
+            </section>
+
+            <section class="suggest-section">
+                <div class="suggest-section__head">
+                    <h2>Gợi ý cho bạn</h2>
+                    <a href="/products">Xem tất cả <i class="fa-solid fa-chevron-right"></i></a>
+                </div>
+
+                <div class="empty-note" th:if="${#lists.isEmpty(regularProducts)}">Chưa có sản phẩm thường.</div>
+                <div class="flash-sale__list" th:unless="${#lists.isEmpty(regularProducts)}">
+                    <a class="product-card"
+                       th:each="product : ${#lists.size(regularProducts) > 10 ? #lists.subList(regularProducts, 0, 10) : regularProducts}"
+                       th:href="@{/products/{id}(id=${product.id})}">
+                        <div class="product-card__img-wrapper">
+                            <div class="product-card__img-placeholder"><i class="fa-solid fa-mobile-screen-button"></i></div>
+                        </div>
+                        <h3 class="product-card__title" th:text="${product.name}">Tên sản phẩm</h3>
+                        <span class="product-card__old-price" th:if="${product.discount > 0}"
+                              th:text="${#numbers.formatInteger(product.price + (product.price * product.discount / 100), 0, 'DEFAULT')} + 'đ'">0đ</span>
+                        <span class="product-card__discount" th:if="${product.discount > 0}" th:text="'-' + ${product.discount} + '%'">-10%</span>
+                        <span class="product-card__price" th:text="${#numbers.formatInteger(product.price, 0, 'DEFAULT')} + 'đ'">0đ</span>
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__grid">
+                <div class="footer__column">
+                    <h4>Tổng đài hỗ trợ</h4>
+                    <ul>
+                        <li><a href="#">Gọi mua: 1900 232 460 (7:30 - 22:00)</a></li>
+                        <li><a href="#">Khiếu nại: 1800 1062 (8:00 - 21:30)</a></li>
+                        <li><a href="#">Bảo hành: 1900 232 464 (8:00 - 21:00)</a></li>
+                    </ul>
+                </div>
+                <div class="footer__column">
+                    <h4>Về công ty</h4>
+                    <ul>
+                        <li><a href="#">Giới thiệu công ty (MWG.vn)</a></li>
+                        <li><a href="#">Tuyển dụng</a></li>
+                        <li><a href="#">Gửi góp ý, khiếu nại</a></li>
+                    </ul>
+                </div>
+                <div class="footer__column">
+                    <h4>Thông tin khác</h4>
+                    <ul>
+                        <li><a href="#">Tìm siêu thị</a></li>
+                        <li><a href="#">Chính sách bảo hành</a></li>
+                        <li><a href="#">Mua trả góp</a></li>
+                    </ul>
+                </div>
+                <div class="footer__column">
+                    <h4>Kết nối với chúng tôi</h4>
+                    <ul>
+                        <li><a href="#"><i class="fa-brands fa-facebook"></i> Facebook</a></li>
+                        <li><a href="#"><i class="fa-brands fa-youtube"></i> YouTube</a></li>
+                        <li><a href="#"><i class="fa-brands fa-tiktok"></i> TikTok</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/script.js"></script>
+</body>
+</html>
+
+
+
