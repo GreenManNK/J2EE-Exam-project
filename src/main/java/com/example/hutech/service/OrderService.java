@@ -10,6 +10,7 @@ import com.example.hutech.repository.OrderRepository;
 import com.example.hutech.repository.ProductRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +49,23 @@ public class OrderService {
      */
     public Optional<Order> getOrderById(Long id) {
         return orderRepository.findById(id);
+    }
+
+    public Optional<Order> getOrderForViewer(Long orderId, User viewer) {
+        if (viewer == null) {
+            return Optional.empty();
+        }
+
+        Optional<Order> orderOpt = orderRepository.findById(orderId);
+        if (orderOpt.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Order order = orderOpt.get();
+        if (isOrderVisibleToUser(order, viewer)) {
+            return Optional.of(order);
+        }
+        return Optional.empty();
     }
     
     /**
@@ -118,6 +136,42 @@ public class OrderService {
         order.setOrderDetails(details);
         return orderRepository.save(order);
     }
+
+    public void cancelOrderForUser(Long orderId, User requester) {
+        if (requester == null) {
+            throw new IllegalArgumentException("Vui long dang nhap.");
+        }
+
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Don hang khong ton tai."));
+
+        if (!isOrderVisibleToUser(order, requester)) {
+            throw new IllegalArgumentException("Ban khong co quyen thao tac don hang nay.");
+        }
+
+        String currentStatus = order.getStatus() == null ? "" : order.getStatus().trim().toLowerCase(Locale.ROOT);
+        if (!currentStatus.equals("pending") && !currentStatus.equals("processing")) {
+            throw new IllegalArgumentException("Chi co the huy don o trang thai pending/processing.");
+        }
+
+        if (order.getOrderDetails() != null) {
+            for (OrderDetail detail : order.getOrderDetails()) {
+                if (detail.getProduct() == null || detail.getQuantity() <= 0) {
+                    continue;
+                }
+                Product product = productRepository.findById(detail.getProduct().getId())
+                        .orElse(null);
+                if (product == null) {
+                    continue;
+                }
+                product.setQuantity(product.getQuantity() + detail.getQuantity());
+                productRepository.save(product);
+            }
+        }
+
+        order.setStatus("cancelled");
+        orderRepository.save(order);
+    }
     
     /**
      * Update an existing order.
@@ -149,5 +203,19 @@ public class OrderService {
     
     public void deleteOrder(Long id) {
         deleteOrderById(id);
+    }
+
+    private boolean isOrderVisibleToUser(Order order, User user) {
+        if (order == null || user == null) {
+            return false;
+        }
+
+        if (user.getUsername() != null && UserService.ADMIN_USERNAME.equalsIgnoreCase(user.getUsername().trim())) {
+            return true;
+        }
+
+        return order.getUser() != null
+                && order.getUser().getId() != null
+                && order.getUser().getId().equals(user.getId());
     }
 }

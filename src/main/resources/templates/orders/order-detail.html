@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiet don hang</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .page-alert {
+            border-radius: 10px;
+            padding: 10px 12px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .page-alert.success {
+            background: #ecfdf3;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+        .page-alert.error {
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+        .order-summary {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+        .order-card {
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            background: #fff;
+        }
+        .order-card__label {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+        .order-card__value {
+            font-size: 15px;
+            font-weight: 800;
+            color: #111827;
+        }
+        .detail-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+        @media (max-width: 900px) {
+            .order-summary {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (max-width: 640px) {
+            .order-summary {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="tgdd-page-body">
+<th:block th:replace="~{fragments/tgdd-shell :: siteHeader}"></th:block>
+
+<main class="tgdd-main">
+    <div class="tgdd-container">
+        <div class="tgdd-page-head">
+            <h1 class="tgdd-page-title"><i class="fas fa-receipt"></i> Chi tiet don hang <span th:text="${'#' + order.id}">#1</span></h1>
+            <a class="tgdd-btn tgdd-btn-light" href="/orders"><i class="fas fa-arrow-left"></i> Quay lai danh sach</a>
+        </div>
+
+        <div th:if="${successMessage}" class="page-alert success" th:text="${successMessage}"></div>
+        <div th:if="${errorMessage}" class="page-alert error" th:text="${errorMessage}"></div>
+
+        <section class="order-summary">
+            <article class="order-card">
+                <div class="order-card__label">Khach hang</div>
+                <div class="order-card__value" th:text="${order.customerName}">Ten</div>
+            </article>
+            <article class="order-card">
+                <div class="order-card__label">So dien thoai</div>
+                <div class="order-card__value" th:text="${order.phone}">0900</div>
+            </article>
+            <article class="order-card">
+                <div class="order-card__label">Trang thai</div>
+                <div class="order-card__value" th:text="${order.status}">pending</div>
+            </article>
+            <article class="order-card">
+                <div class="order-card__label">Tong tien</div>
+                <div class="order-card__value" th:text="${'₫' + #numbers.formatInteger(order.totalPrice, 0, 'DEFAULT')}">₫0</div>
+            </article>
+        </section>
+
+        <div class="tgdd-card" style="padding: 12px;">
+            <h3 style="margin:0 0 10px;">Danh sach san pham</h3>
+            <table class="tgdd-table">
+                <thead>
+                <tr>
+                    <th>San pham</th>
+                    <th style="width:120px;">So luong</th>
+                    <th style="width:180px;">Don gia</th>
+                    <th style="width:180px;">Thanh tien</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="detail : ${order.orderDetails}">
+                    <td th:text="${#strings.isEmpty(detail.productName) ? (detail.product != null ? detail.product.name : 'San pham') : detail.productName}">San pham</td>
+                    <td th:text="${detail.quantity}">1</td>
+                    <td th:text="${'₫' + #numbers.formatInteger(detail.unitPrice, 0, 'DEFAULT')}">₫0</td>
+                    <td th:text="${'₫' + #numbers.formatInteger(detail.lineTotal, 0, 'DEFAULT')}">₫0</td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(order.orderDetails)}">
+                    <td colspan="4" class="tgdd-empty">Khong co chi tiet don hang.</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="detail-actions">
+                <form th:if="${!isOrderAdmin and (order.status == 'pending' or order.status == 'processing')}"
+                      th:action="@{/orders/{id}/cancel(id=${order.id})}" method="post">
+                    <button class="tgdd-btn tgdd-btn-primary" type="submit"
+                            onclick="return confirm('Ban chac chan muon huy don hang nay?')">
+                        <i class="fas fa-ban"></i> Huy don hang
+                    </button>
+                </form>
+                <a th:if="${isOrderAdmin}" class="tgdd-btn tgdd-btn-light" th:href="@{/orders/edit/{id}(id=${order.id})}">
+                    <i class="fas fa-pen"></i> Sua don
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<th:block th:replace="~{fragments/tgdd-shell :: siteFooter}"></th:block>
+<script src="/js/script.js"></script>
+</body>
+</html>

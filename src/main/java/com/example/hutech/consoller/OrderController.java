@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.validation.Valid;
 import java.util.List;
 
@@ -35,6 +36,26 @@ public class OrderController {
  model.addAttribute("orders", orders);
  model.addAttribute("isOrderAdmin", isAdmin);
  return "/orders/orders-list";
+ }
+
+ @GetMapping("/{id}")
+ public String orderDetail(@PathVariable Long id, Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+ User user = getCurrentUser(session);
+ if (user == null) {
+ session.setAttribute("redirectAfterLogin", "/orders/" + id);
+ return "redirect:/auth/login";
+ }
+
+ Order order = orderService.getOrderForViewer(id, user)
+ .orElse(null);
+ if (order == null) {
+ redirectAttributes.addFlashAttribute("errorMessage", "Khong tim thay don hang hoac ban khong co quyen truy cap.");
+ return "redirect:/orders";
+ }
+
+ model.addAttribute("order", order);
+ model.addAttribute("isOrderAdmin", userService.isAdmin(user));
+ return "/orders/order-detail";
  }
     
  @GetMapping("/add")
@@ -74,6 +95,23 @@ public class OrderController {
  public String deleteOrder(@PathVariable Long id) {
  orderService.deleteOrder(id);
  return "redirect:/orders";
+ }
+
+ @PostMapping("/{id}/cancel")
+ public String cancelOrder(@PathVariable Long id, HttpSession session, RedirectAttributes redirectAttributes) {
+ User user = getCurrentUser(session);
+ if (user == null) {
+ session.setAttribute("redirectAfterLogin", "/orders/" + id);
+ return "redirect:/auth/login";
+ }
+
+ try {
+ orderService.cancelOrderForUser(id, user);
+ redirectAttributes.addFlashAttribute("successMessage", "Da huy don hang #" + id);
+ } catch (IllegalArgumentException e) {
+ redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+ }
+ return "redirect:/orders/" + id;
  }
 
  private User getCurrentUser(HttpSession session) {
