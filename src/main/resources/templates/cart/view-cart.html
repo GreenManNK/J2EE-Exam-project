@@ -138,10 +138,14 @@
                 <div class="summary-row"><span>Tam tinh</span><span th:text="'₫' + ${#numbers.formatInteger(totalPrice, 0, 'DEFAULT')}">₫0</span></div>
                 <div class="summary-row"><span>Phi van chuyen</span><span>₫0</span></div>
                 <div class="summary-row summary-total"><span>Tong cong</span><span th:text="'₫' + ${#numbers.formatInteger(totalPrice, 0, 'DEFAULT')}">₫0</span></div>
+                <p th:if="${guestMode}" style="margin: 10px 0 0; color:#b91c1c; font-size:13px;">
+                    Ban co the them gio hang khi chua dang nhap. De thanh toan, vui long dang nhap.
+                </p>
                 <div class="summary-actions">
                     <form th:action="@{/cart/checkout}" method="post">
                         <button class="tgdd-btn tgdd-btn-primary" style="width:100%;" type="submit">
-                            <i class="fas fa-credit-card"></i> Dat hang ngay
+                            <i class="fas fa-credit-card"></i>
+                            <span th:text="${guestMode ? 'Dang nhap de thanh toan' : 'Dat hang ngay'}">Dat hang ngay</span>
                         </button>
                     </form>
                     <form th:action="@{/cart/clear}" method="post">

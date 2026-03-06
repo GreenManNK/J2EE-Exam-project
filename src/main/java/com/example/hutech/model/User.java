@@ -29,8 +29,12 @@ public class User {
     private String password;
     
     private String fullName;
+    @Column(unique = true)
     private String phone;
     private String address;
+    
+    @Column(unique = true)
+    private String facebookId;
     
     @Column(columnDefinition = "boolean default true")
     private boolean active = true;

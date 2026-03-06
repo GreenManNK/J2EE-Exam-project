@@ -153,7 +153,7 @@
                     <li class="main-menu__item">
                         <a href="/orders" class="main-menu__link"><i class="fa-solid fa-file-invoice"></i> Đơn hàng</a>
                     </li>
-                    <li class="main-menu__item">
+                    <li class="main-menu__item" th:if="${isAdmin}">
                         <a href="/admin" class="main-menu__link"><i class="fa-solid fa-user-gear"></i> Admin</a>
                     </li>
                 </ul>

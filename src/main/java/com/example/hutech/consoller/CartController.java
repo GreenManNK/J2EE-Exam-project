@@ -20,6 +20,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping("/cart")
 public class CartController {
+    private static final String SESSION_GUEST_CART_ID = "guestCartId";
+
     @Autowired
     private CartService cartService;
 
@@ -31,15 +33,10 @@ public class CartController {
 
     @GetMapping
     public String viewCart(HttpSession session, Model model) {
-        User user = getCurrentUser(session);
-        if (user == null) {
-            session.setAttribute("redirectAfterLogin", "/cart");
-            return "redirect:/auth/login";
-        }
-
-        Cart cart = cartService.getOrCreateCart(user);
+        Cart cart = getCurrentCart(session);
         model.addAttribute("cart", cart);
         model.addAttribute("totalPrice", cart.getTotalPrice());
+        model.addAttribute("guestMode", getCurrentUser(session) == null);
         return "/cart/view-cart";
     }
 
@@ -49,14 +46,8 @@ public class CartController {
             @RequestParam(name = "redirect", required = false) String redirect,
             HttpSession session,
             RedirectAttributes redirectAttributes) {
-        User user = getCurrentUser(session);
-        if (user == null) {
-            session.setAttribute("redirectAfterLogin", "/products/" + productId);
-            return "redirect:/auth/login";
-        }
-
         try {
-            Cart cart = cartService.getOrCreateCart(user);
+            Cart cart = getCurrentCart(session);
             cartService.addToCart(cart, productId, quantity);
             redirectAttributes.addFlashAttribute("successMessage", "Da them san pham vao gio hang.");
         } catch (IllegalArgumentException e) {
@@ -73,18 +64,12 @@ public class CartController {
     public String removeFromCart(@PathVariable Long itemId,
             HttpSession session,
             RedirectAttributes redirectAttributes) {
-        User user = getCurrentUser(session);
-        if (user == null) {
-            session.setAttribute("redirectAfterLogin", "/cart");
-            return "redirect:/auth/login";
-        }
-
-        Cart cart = cartService.getOrCreateCart(user);
-        boolean itemBelongsToCurrentUser = cartService.getCartItemById(itemId)
+        Cart cart = getCurrentCart(session);
+        boolean itemBelongsToCurrentCart = cartService.getCartItemById(itemId)
                 .map(item -> item.getCart() != null && item.getCart().getId().equals(cart.getId()))
                 .orElse(false);
 
-        if (itemBelongsToCurrentUser) {
+        if (itemBelongsToCurrentCart) {
             cartService.removeFromCart(itemId);
             redirectAttributes.addFlashAttribute("successMessage", "Da xoa san pham khoi gio hang.");
         } else {
@@ -99,18 +84,12 @@ public class CartController {
             @RequestParam int quantity,
             HttpSession session,
             RedirectAttributes redirectAttributes) {
-        User user = getCurrentUser(session);
-        if (user == null) {
-            session.setAttribute("redirectAfterLogin", "/cart");
-            return "redirect:/auth/login";
-        }
-
-        Cart cart = cartService.getOrCreateCart(user);
-        boolean itemBelongsToCurrentUser = cartService.getCartItemById(itemId)
+        Cart cart = getCurrentCart(session);
+        boolean itemBelongsToCurrentCart = cartService.getCartItemById(itemId)
                 .map(item -> item.getCart() != null && item.getCart().getId().equals(cart.getId()))
                 .orElse(false);
 
-        if (!itemBelongsToCurrentUser) {
+        if (!itemBelongsToCurrentCart) {
             redirectAttributes.addFlashAttribute("errorMessage", "Khong the cap nhat muc gio hang nay.");
             return "redirect:/cart";
         }
@@ -127,13 +106,7 @@ public class CartController {
 
     @PostMapping("/clear")
     public String clearCart(HttpSession session, RedirectAttributes redirectAttributes) {
-        User user = getCurrentUser(session);
-        if (user == null) {
-            session.setAttribute("redirectAfterLogin", "/cart");
-            return "redirect:/auth/login";
-        }
-
-        Cart cart = cartService.getOrCreateCart(user);
+        Cart cart = getCurrentCart(session);
         cartService.clearCart(cart);
         redirectAttributes.addFlashAttribute("successMessage", "Da xoa toan bo gio hang.");
         return "redirect:/cart";
@@ -144,10 +117,11 @@ public class CartController {
         User user = getCurrentUser(session);
         if (user == null) {
             session.setAttribute("redirectAfterLogin", "/cart");
+            redirectAttributes.addFlashAttribute("errorMessage", "Vui long dang nhap de thanh toan.");
             return "redirect:/auth/login";
         }
 
-        Cart cart = cartService.getOrCreateCart(user);
+        Cart cart = getCurrentCart(session);
         if (cart.getItems() == null || cart.getItems().isEmpty()) {
             redirectAttributes.addFlashAttribute("errorMessage", "Gio hang dang trong.");
             return "redirect:/cart";
@@ -167,6 +141,44 @@ public class CartController {
         cartService.clearCart(cart);
         redirectAttributes.addFlashAttribute("successMessage", "Dat hang thanh cong. Ma don: #" + order.getId());
         return "redirect:/orders";
+    }
+
+    private Cart getCurrentCart(HttpSession session) {
+        User user = getCurrentUser(session);
+        if (user != null) {
+            Cart userCart = cartService.getOrCreateCart(user);
+            mergeGuestCartIntoUserCart(session, userCart);
+            return userCart;
+        }
+        return getOrCreateGuestCart(session);
+    }
+
+    private Cart getOrCreateGuestCart(HttpSession session) {
+        Long guestCartId = (Long) session.getAttribute(SESSION_GUEST_CART_ID);
+        if (guestCartId != null) {
+            var cartOpt = cartService.getCartById(guestCartId);
+            if (cartOpt.isPresent()) {
+                Cart cart = cartOpt.get();
+                if (cart.getItems() == null) {
+                    cart.setItems(new java.util.ArrayList<>());
+                }
+                return cart;
+            }
+        }
+
+        Cart guestCart = cartService.createGuestCart();
+        session.setAttribute(SESSION_GUEST_CART_ID, guestCart.getId());
+        return guestCart;
+    }
+
+    private void mergeGuestCartIntoUserCart(HttpSession session, Cart userCart) {
+        Long guestCartId = (Long) session.getAttribute(SESSION_GUEST_CART_ID);
+        if (guestCartId == null) {
+            return;
+        }
+
+        cartService.getCartById(guestCartId).ifPresent(guestCart -> cartService.mergeCarts(guestCart, userCart));
+        session.removeAttribute(SESSION_GUEST_CART_ID);
     }
 
     private User getCurrentUser(HttpSession session) {

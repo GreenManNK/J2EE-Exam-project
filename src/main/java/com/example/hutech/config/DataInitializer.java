@@ -2,13 +2,17 @@ package com.example.hutech.config;
 
 import com.example.hutech.model.Category;
 import com.example.hutech.model.Product;
+import com.example.hutech.model.User;
 import com.example.hutech.repository.CategoryRepository;
 import com.example.hutech.repository.ProductRepository;
+import com.example.hutech.repository.UserRepository;
+import com.example.hutech.service.UserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @RequiredArgsConstructor
@@ -16,6 +20,25 @@ public class DataInitializer {
 
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    @Bean
+    CommandLineRunner seedAdminUser() {
+        return args -> {
+            if (userRepository.findByUsername(UserService.ADMIN_USERNAME).isPresent()) {
+                return;
+            }
+
+            User admin = new User();
+            admin.setUsername(UserService.ADMIN_USERNAME);
+            admin.setEmail("admin@tgdd.local");
+            admin.setPassword(passwordEncoder.encode("Admin@123"));
+            admin.setFullName("System Admin");
+            admin.setActive(true);
+            userRepository.save(admin);
+        };
+    }
 
     @Bean
     CommandLineRunner seedCatalogData() {

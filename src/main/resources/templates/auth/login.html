@@ -53,6 +53,23 @@
             font-weight: 700;
             text-decoration: none;
         }
+        .auth-separator {
+            text-align: center;
+            color: #6b7280;
+            margin: 12px 0;
+            font-size: 13px;
+        }
+        .auth-fb-btn {
+            width: 100%;
+            justify-content: center;
+            background: #1877f2;
+            color: #fff !important;
+            border-color: #1877f2;
+        }
+        .auth-fb-btn:hover {
+            background: #1668d3;
+            border-color: #1668d3;
+        }
     </style>
 </head>
 <body class="tgdd-page-body">
@@ -63,15 +80,15 @@
         <div class="auth-wrap">
             <div class="tgdd-card auth-card">
                 <h1 class="auth-title">Dang nhap</h1>
-                <p class="auth-sub">Dang nhap de tiep tuc mua sam tai thegioididong.</p>
+                <p class="auth-sub">Dang nhap bang ten dang nhap, email, so dien thoai hoac Facebook.</p>
 
                 <div th:if="${successMessage}" class="auth-success" th:text="${successMessage}"></div>
                 <div th:if="${error}" class="auth-error" th:text="${error}"></div>
 
                 <form method="post" th:action="@{/auth/login}">
                     <div class="tgdd-form-group">
-                        <label for="username">Ten dang nhap</label>
-                        <input id="username" name="username" type="text" required>
+                        <label for="identifier">Ten dang nhap / Email / So dien thoai</label>
+                        <input id="identifier" name="identifier" type="text" required>
                     </div>
                     <div class="tgdd-form-group">
                         <label for="password">Mat khau</label>
@@ -81,6 +98,11 @@
                         <i class="fas fa-right-to-bracket"></i> Dang nhap
                     </button>
                 </form>
+
+                <div class="auth-separator">Hoac</div>
+                <a class="tgdd-btn auth-fb-btn" href="/auth/facebook">
+                    <i class="fab fa-facebook-f"></i> Dang nhap bang Facebook
+                </a>
 
                 <div class="auth-bottom">
                     Chua co tai khoan?

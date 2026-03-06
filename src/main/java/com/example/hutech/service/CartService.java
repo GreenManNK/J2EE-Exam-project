@@ -8,6 +8,8 @@ import com.example.hutech.repository.CartItemRepository;
 import com.example.hutech.repository.CartRepository;
 import com.example.hutech.repository.ProductRepository;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,10 +39,28 @@ public class CartService {
         return cartRepository.save(newCart);
     }
 
+    public Cart createGuestCart() {
+        Cart guestCart = new Cart();
+        guestCart.setUser(null);
+        guestCart.setItems(new ArrayList<>());
+        return cartRepository.save(guestCart);
+    }
+
+    public Optional<Cart> getCartById(Long cartId) {
+        return cartRepository.findById(cartId);
+    }
+
     public long getTotalItemCount(User user) {
         return cartRepository.findByUser(user)
                 .map(cart -> cart.getItems() == null ? 0L : cart.getItems().stream().mapToLong(CartItem::getQuantity).sum())
                 .orElse(0L);
+    }
+
+    public long getTotalItemCount(Cart cart) {
+        if (cart == null || cart.getItems() == null) {
+            return 0L;
+        }
+        return cart.getItems().stream().mapToLong(CartItem::getQuantity).sum();
     }
 
     public void addToCart(Cart cart, Long productId, int quantity) {
@@ -111,5 +131,55 @@ public class CartService {
             cart.getItems().clear();
         }
         cartRepository.save(cart);
+    }
+
+    public void mergeCarts(Cart sourceCart, Cart targetCart) {
+        if (sourceCart == null || targetCart == null || Objects.equals(sourceCart.getId(), targetCart.getId())) {
+            return;
+        }
+
+        if (sourceCart.getItems() == null || sourceCart.getItems().isEmpty()) {
+            return;
+        }
+
+        if (targetCart.getItems() == null) {
+            targetCart.setItems(new ArrayList<>());
+        }
+
+        sourceCart.getItems().stream()
+                .sorted(Comparator.comparing(item -> item.getId() == null ? 0L : item.getId()))
+                .forEach(sourceItem -> {
+                    Product product = sourceItem.getProduct();
+                    if (product == null || product.getQuantity() <= 0 || sourceItem.getQuantity() <= 0) {
+                        return;
+                    }
+
+                    CartItem existingTargetItem = targetCart.getItems().stream()
+                            .filter(item -> item.getProduct() != null
+                                    && item.getProduct().getId().equals(product.getId()))
+                            .findFirst()
+                            .orElse(null);
+
+                    int currentTargetQty = existingTargetItem == null ? 0 : existingTargetItem.getQuantity();
+                    int mergedQty = Math.min(product.getQuantity(), currentTargetQty + sourceItem.getQuantity());
+                    if (mergedQty <= 0) {
+                        return;
+                    }
+
+                    if (existingTargetItem != null) {
+                        existingTargetItem.setQuantity(mergedQty);
+                        cartItemRepository.save(existingTargetItem);
+                    } else {
+                        CartItem newItem = new CartItem();
+                        newItem.setCart(targetCart);
+                        newItem.setProduct(product);
+                        newItem.setQuantity(Math.min(product.getQuantity(), sourceItem.getQuantity()));
+                        targetCart.getItems().add(newItem);
+                        cartItemRepository.save(newItem);
+                    }
+                });
+
+        clearCart(sourceCart);
+        cartRepository.save(targetCart);
     }
 }

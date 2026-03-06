@@ -298,7 +298,7 @@
 
         <div class="tgdd-page-head">
             <h1 class="tgdd-page-title"><i class="fas fa-mobile-screen"></i> Danh sach san pham</h1>
-            <a class="tgdd-btn tgdd-btn-primary" href="/products/add"><i class="fas fa-plus"></i> Them san pham</a>
+            <a th:if="${isAdmin}" class="tgdd-btn tgdd-btn-primary" href="/products/add"><i class="fas fa-plus"></i> Them san pham</a>
         </div>
 
         <div th:if="${successMessage}" class="page-alert success" th:text="${successMessage}"></div>
@@ -404,8 +404,8 @@
                                     <i class="fas fa-cart-plus"></i> Gio
                                 </button>
                             </form>
-                            <a class="mini-btn" th:href="@{/products/edit/{id}(id=${product.id})}"><i class="fas fa-pen"></i> Sua</a>
-                            <a class="mini-btn danger" th:href="@{/products/delete/{id}(id=${product.id})}"
+                            <a th:if="${isAdmin}" class="mini-btn" th:href="@{/products/edit/{id}(id=${product.id})}"><i class="fas fa-pen"></i> Sua</a>
+                            <a th:if="${isAdmin}" class="mini-btn danger" th:href="@{/products/delete/{id}(id=${product.id})}"
                                onclick="return confirm('Ban chac chan muon xoa san pham nay?')"><i class="fas fa-trash"></i> Xoa</a>
                         </div>
                     </article>

@@ -14,7 +14,7 @@
     <div class="tgdd-container">
         <div class="tgdd-page-head">
             <h1 class="tgdd-page-title"><i class="fas fa-list"></i> Quan ly danh muc</h1>
-            <a class="tgdd-btn tgdd-btn-primary" href="/categories/add"><i class="fas fa-plus"></i> Them danh muc</a>
+            <a th:if="${isAdmin}" class="tgdd-btn tgdd-btn-primary" href="/categories/add"><i class="fas fa-plus"></i> Them danh muc</a>
         </div>
 
         <div class="tgdd-card" style="padding: 12px;">
@@ -36,13 +36,14 @@
                     </td>
                     <td th:text="${category.name}">Dien thoai</td>
                     <td style="display:flex; gap:8px;">
-                        <a class="tgdd-btn tgdd-btn-light" th:href="@{/categories/edit/{id}(id=${category.id})}">
+                        <a th:if="${isAdmin}" class="tgdd-btn tgdd-btn-light" th:href="@{/categories/edit/{id}(id=${category.id})}">
                             <i class="fas fa-pen"></i> Sua
                         </a>
-                        <a class="tgdd-btn tgdd-btn-primary" th:href="@{/categories/delete/{id}(id=${category.id})}"
+                        <a th:if="${isAdmin}" class="tgdd-btn tgdd-btn-primary" th:href="@{/categories/delete/{id}(id=${category.id})}"
                            onclick="return confirm('Ban chac chan muon xoa danh muc nay?')">
                             <i class="fas fa-trash"></i> Xoa
                         </a>
+                        <span th:unless="${isAdmin}" style="color:#6b7280; font-size:13px;">Chi tiet</span>
                     </td>
                 </tr>
                 <tr th:if="${categories.isEmpty()}">
