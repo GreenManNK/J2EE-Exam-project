@@ -70,6 +70,12 @@
             background: #1668d3;
             border-color: #1668d3;
         }
+        .auth-note {
+            margin-top: 10px;
+            color: #6b7280;
+            font-size: 13px;
+            text-align: center;
+        }
     </style>
 </head>
 <body class="tgdd-page-body">
@@ -100,9 +106,12 @@
                 </form>
 
                 <div class="auth-separator">Hoac</div>
-                <a class="tgdd-btn auth-fb-btn" href="/auth/facebook">
+                <a th:if="${facebookLoginEnabled}" class="tgdd-btn auth-fb-btn" href="/auth/facebook">
                     <i class="fab fa-facebook-f"></i> Dang nhap bang Facebook
                 </a>
+                <p th:unless="${facebookLoginEnabled}" class="auth-note">
+                    Dang nhap Facebook chua duoc cau hinh trong he thong.
+                </p>
 
                 <div class="auth-bottom">
                     Chua co tai khoan?

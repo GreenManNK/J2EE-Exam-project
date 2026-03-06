@@ -21,6 +21,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         "/products/delete/**",
                         "/categories/add",
                         "/categories/edit/**",
-                        "/categories/delete/**");
+                        "/categories/delete/**",
+                        "/orders/add",
+                        "/orders/edit/**",
+                        "/orders/delete/**");
     }
 }

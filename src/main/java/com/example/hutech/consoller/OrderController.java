@@ -1,7 +1,10 @@
 package com.example.hutech.consoller;
 
 import com.example.hutech.model.Order;
+import com.example.hutech.model.User;
 import com.example.hutech.service.OrderService;
+import com.example.hutech.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,11 +18,22 @@ import java.util.List;
 public class OrderController {
  @Autowired
  private OrderService orderService;
+
+ @Autowired
+ private UserService userService;
     
  @GetMapping
- public String listOrders(Model model) {
- List<Order> orders = orderService.getAllOrders();
+ public String listOrders(Model model, HttpSession session) {
+ User user = getCurrentUser(session);
+ if (user == null) {
+ session.setAttribute("redirectAfterLogin", "/orders");
+ return "redirect:/auth/login";
+ }
+
+ boolean isAdmin = userService.isAdmin(user);
+ List<Order> orders = isAdmin ? orderService.getAllOrders() : orderService.getOrdersByUser(user);
  model.addAttribute("orders", orders);
+ model.addAttribute("isOrderAdmin", isAdmin);
  return "/orders/orders-list";
  }
     
@@ -60,5 +74,17 @@ public class OrderController {
  public String deleteOrder(@PathVariable Long id) {
  orderService.deleteOrder(id);
  return "redirect:/orders";
+ }
+
+ private User getCurrentUser(HttpSession session) {
+ Long userId = (Long) session.getAttribute("userId");
+ if (userId == null) {
+ return null;
+ }
+
+ return userService.getUserById(userId).orElseGet(() -> {
+ session.invalidate();
+ return null;
+ });
  }
 }

@@ -3,7 +3,7 @@
 <body>
 <th:block th:fragment="siteHeader">
     <div class="promo-strip">
-        <a href="#">Gấp đôi quà x2 tình yêu - Đồng hồ chỉ từ 83.000đ</a>
+        <a href="#">Gap doi qua x2 tinh yeu - Dong ho chi tu 83.000d</a>
     </div>
 
     <div class="top-banner">
@@ -24,30 +24,30 @@
                 </a>
 
                 <div class="header__search">
-                    <input type="text" class="header__search-input" placeholder="Bạn tìm gì hôm nay?">
+                    <input type="text" class="header__search-input" placeholder="Ban tim gi hom nay?">
                     <button class="header__search-btn" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </div>
 
                 <div class="header__actions">
                     <a class="header__action-item" th:if="${!loggedIn}" href="/auth/login">
-                        <i class="fa-regular fa-user"></i> Đăng nhập
+                        <i class="fa-regular fa-user"></i> Dang nhap
                     </a>
                     <a class="header__action-item" th:if="${loggedIn}" href="/auth/logout">
                         <i class="fa-solid fa-right-from-bracket"></i>
-                        Đăng xuất (<span th:text="${currentUsername}">user</span>)
+                        Dang xuat (<span th:text="${currentUsername}">user</span>)
                     </a>
                     <a class="header__action-item" href="/cart">
                         <i class="fa-solid fa-cart-shopping"></i>
-                        Giỏ hàng<span th:if="${cartItemCount > 0}" th:text="${' (' + cartItemCount + ')'}"></span>
+                        Gio hang<span th:if="${cartItemCount > 0}" th:text="${' (' + cartItemCount + ')'}"></span>
                     </a>
-                    <a class="header__action-item" href="#"><i class="fa-solid fa-location-dot"></i> Hồ Chí Minh</a>
+                    <a class="header__action-item" href="#"><i class="fa-solid fa-location-dot"></i> Ho Chi Minh</a>
                 </div>
             </div>
 
             <nav class="main-menu">
                 <ul class="main-menu__list">
                     <li class="main-menu__item">
-                        <a href="/products" class="main-menu__link"><i class="fa-solid fa-mobile-screen-button"></i> Điện thoại</a>
+                        <a href="/products" class="main-menu__link"><i class="fa-solid fa-mobile-screen-button"></i> Dien thoai</a>
                     </li>
                     <li class="main-menu__item">
                         <a href="/products" class="main-menu__link"><i class="fa-solid fa-laptop"></i> Laptop</a>
@@ -58,41 +58,41 @@
                            aria-expanded="false"
                            aria-controls="accessoriesDropdown"
                            aria-haspopup="true">
-                            <i class="fa-solid fa-headphones"></i> Phụ kiện
+                            <i class="fa-solid fa-headphones"></i> Phu kien
                         </a>
-                        <div class="mega-menu" id="accessoriesDropdown" role="menu" aria-label="Danh mục phụ kiện">
+                        <div class="mega-menu" id="accessoriesDropdown" role="menu" aria-label="Danh muc phu kien">
                             <div class="mega-menu__body">
                                 <div class="mega-menu__columns">
                                     <section class="mega-menu__group">
-                                        <h4>Phụ kiện trong dự án</h4>
+                                        <h4>Phu kien trong du an</h4>
                                         <div class="mega-menu__grid">
                                             <a class="mega-menu__item"
                                                th:each="category : ${categories}"
                                                th:href="@{/products(category=${category.id})}">
                                                 <i th:class="${#strings.isEmpty(category.icon) ? 'fa-solid fa-list' : category.icon}"></i>
-                                                <span th:text="${category.name}">Danh mục</span>
+                                                <span th:text="${category.name}">Danh muc</span>
                                             </a>
                                             <a class="mega-menu__item" th:if="${#lists.isEmpty(categories)}" href="/categories">
                                                 <i class="fa-solid fa-list"></i>
-                                                <span>Chưa có danh mục</span>
+                                                <span>Chua co danh muc</span>
                                             </a>
                                         </div>
                                     </section>
                                     <section class="mega-menu__group">
-                                        <h4>Truy cập nhanh</h4>
+                                        <h4>Truy cap nhanh</h4>
                                         <div class="mega-menu__grid">
-                                            <a href="/products?tab=promo" class="mega-menu__item"><i class="fa-solid fa-bolt"></i><span>Sản phẩm khuyến mãi</span></a>
-                                            <a href="/products?tab=regular" class="mega-menu__item"><i class="fa-solid fa-box-open"></i><span>Sản phẩm thường</span></a>
-                                            <a href="/cart" class="mega-menu__item"><i class="fa-solid fa-cart-shopping"></i><span>Giỏ hàng của bạn</span></a>
-                                            <a href="/wishlist" class="mega-menu__item"><i class="fa-solid fa-heart"></i><span>Danh sách yêu thích</span></a>
-                                            <a href="/orders" class="mega-menu__item"><i class="fa-solid fa-file-invoice"></i><span>Đơn hàng</span></a>
-                                            <a th:if="${isAdmin}" href="/admin" class="mega-menu__item"><i class="fa-solid fa-user-gear"></i><span>Trang quản trị</span></a>
+                                            <a href="/products?tab=promo" class="mega-menu__item"><i class="fa-solid fa-bolt"></i><span>San pham khuyen mai</span></a>
+                                            <a href="/products?tab=regular" class="mega-menu__item"><i class="fa-solid fa-box-open"></i><span>San pham thuong</span></a>
+                                            <a href="/cart" class="mega-menu__item"><i class="fa-solid fa-cart-shopping"></i><span>Gio hang cua ban</span></a>
+                                            <a href="/wishlist" class="mega-menu__item"><i class="fa-solid fa-heart"></i><span>Danh sach yeu thich</span></a>
+                                            <a href="/orders" class="mega-menu__item"><i class="fa-solid fa-file-invoice"></i><span>Don hang</span></a>
+                                            <a th:if="${isAdmin}" href="/admin" class="mega-menu__item"><i class="fa-solid fa-user-gear"></i><span>Trang quan tri</span></a>
                                         </div>
                                     </section>
                                 </div>
                                 <aside class="mega-menu__promo">
                                     <a href="/products?tab=promo">
-                                        <img src="https://cdnv2.tgdd.vn/mwg-static/tgdd/Banner/d8/ab/d8ab342d5f6f12580593ebc2adb9b663.png" alt="Khuyến mãi">
+                                        <img src="https://cdnv2.tgdd.vn/mwg-static/tgdd/Banner/d8/ab/d8ab342d5f6f12580593ebc2adb9b663.png" alt="Khuyen mai">
                                     </a>
                                 </aside>
                             </div>
@@ -102,16 +102,16 @@
                         <a href="/products" class="main-menu__link"><i class="fa-solid fa-stopwatch"></i> Smartwatch</a>
                     </li>
                     <li class="main-menu__item">
-                        <a href="/products" class="main-menu__link"><i class="fa-regular fa-clock"></i> Đồng hồ</a>
+                        <a href="/products" class="main-menu__link"><i class="fa-regular fa-clock"></i> Dong ho</a>
                     </li>
                     <li class="main-menu__item">
                         <a href="/products" class="main-menu__link"><i class="fa-solid fa-tablet-screen-button"></i> Tablet</a>
                     </li>
                     <li class="main-menu__item">
-                        <a href="/products" class="main-menu__link"><i class="fa-solid fa-desktop"></i> Màn hình, Máy in</a>
+                        <a href="/products" class="main-menu__link"><i class="fa-solid fa-desktop"></i> Man hinh, May in</a>
                     </li>
                     <li class="main-menu__item">
-                        <a href="/orders" class="main-menu__link"><i class="fa-solid fa-file-invoice"></i> Đơn hàng</a>
+                        <a href="/orders" class="main-menu__link"><i class="fa-solid fa-file-invoice"></i> Don hang</a>
                     </li>
                     <li class="main-menu__item">
                         <a th:if="${isAdmin}" href="/admin" class="main-menu__link"><i class="fa-solid fa-user-gear"></i> Admin</a>
@@ -127,31 +127,31 @@
         <div class="container">
             <div class="footer__grid">
                 <div class="footer__column">
-                    <h4>Tổng đài hỗ trợ</h4>
+                    <h4>Tong dai ho tro</h4>
                     <ul>
-                        <li><a href="#">Gọi mua: 1900 232 460 (7:30 - 22:00)</a></li>
-                        <li><a href="#">Khiếu nại: 1800 1062 (8:00 - 21:30)</a></li>
-                        <li><a href="#">Bảo hành: 1900 232 464 (8:00 - 21:00)</a></li>
+                        <li><a href="#">Goi mua: 1900 232 460 (7:30 - 22:00)</a></li>
+                        <li><a href="#">Khieu nai: 1800 1062 (8:00 - 21:30)</a></li>
+                        <li><a href="#">Bao hanh: 1900 232 464 (8:00 - 21:00)</a></li>
                     </ul>
                 </div>
                 <div class="footer__column">
-                    <h4>Về công ty</h4>
+                    <h4>Ve cong ty</h4>
                     <ul>
-                        <li><a href="#">Giới thiệu công ty</a></li>
-                        <li><a href="#">Tuyển dụng</a></li>
-                        <li><a href="#">Gửi góp ý, khiếu nại</a></li>
+                        <li><a href="#">Gioi thieu cong ty</a></li>
+                        <li><a href="#">Tuyen dung</a></li>
+                        <li><a href="#">Gui gop y, khieu nai</a></li>
                     </ul>
                 </div>
                 <div class="footer__column">
-                    <h4>Thông tin khác</h4>
+                    <h4>Thong tin khac</h4>
                     <ul>
-                        <li><a href="#">Tìm siêu thị</a></li>
-                        <li><a href="#">Chính sách bảo hành</a></li>
-                        <li><a href="#">Mua trả góp</a></li>
+                        <li><a href="#">Tim sieu thi</a></li>
+                        <li><a href="#">Chinh sach bao hanh</a></li>
+                        <li><a href="#">Mua tra gop</a></li>
                     </ul>
                 </div>
                 <div class="footer__column">
-                    <h4>Kết nối với chúng tôi</h4>
+                    <h4>Ket noi voi chung toi</h4>
                     <ul>
                         <li><a href="#"><i class="fa-brands fa-facebook"></i> Facebook</a></li>
                         <li><a href="#"><i class="fa-brands fa-youtube"></i> YouTube</a></li>

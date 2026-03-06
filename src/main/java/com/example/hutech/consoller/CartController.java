@@ -122,25 +122,15 @@ public class CartController {
         }
 
         Cart cart = getCurrentCart(session);
-        if (cart.getItems() == null || cart.getItems().isEmpty()) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Gio hang dang trong.");
+        try {
+            Order order = orderService.createOrderFromCart(user, cart);
+            cartService.clearCart(cart);
+            redirectAttributes.addFlashAttribute("successMessage", "Dat hang thanh cong. Ma don: #" + order.getId());
+            return "redirect:/orders";
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/cart";
         }
-
-        Order order = new Order();
-        order.setCustomerName(user.getFullName() == null || user.getFullName().isBlank()
-                ? user.getUsername()
-                : user.getFullName());
-        order.setPhone(user.getPhone() == null ? "" : user.getPhone());
-        order.setAddress(user.getAddress() == null ? "" : user.getAddress());
-        order.setNotes("Dat tu gio hang");
-        order.setTotalPrice(cart.getTotalPrice());
-        order.setStatus("pending");
-        orderService.saveOrder(order);
-
-        cartService.clearCart(cart);
-        redirectAttributes.addFlashAttribute("successMessage", "Dat hang thanh cong. Ma don: #" + order.getId());
-        return "redirect:/orders";
     }
 
     private Cart getCurrentCart(HttpSession session) {

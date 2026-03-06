@@ -53,7 +53,8 @@ public class AuthController {
     private final HttpClient httpClient = HttpClient.newHttpClient();
 
     @GetMapping("/login")
-    public String showLoginForm() {
+    public String showLoginForm(Model model) {
+        model.addAttribute("facebookLoginEnabled", isFacebookConfigured());
         return "/auth/login";
     }
 
@@ -116,6 +117,7 @@ public class AuthController {
             return "redirect:/";
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage());
+            model.addAttribute("facebookLoginEnabled", isFacebookConfigured());
             return "/auth/login";
         }
     }

@@ -26,8 +26,11 @@
 <main class="tgdd-main">
     <div class="tgdd-container">
         <div class="tgdd-page-head">
-            <h1 class="tgdd-page-title"><i class="fas fa-file-invoice"></i> Quan ly don hang</h1>
-            <a class="tgdd-btn tgdd-btn-primary" href="/orders/add"><i class="fas fa-plus"></i> Tao don moi</a>
+            <h1 class="tgdd-page-title">
+                <i class="fas fa-file-invoice"></i>
+                <span th:text="${isOrderAdmin ? 'Quan ly don hang' : 'Don hang cua ban'}">Don hang</span>
+            </h1>
+            <a th:if="${isOrderAdmin}" class="tgdd-btn tgdd-btn-primary" href="/orders/add"><i class="fas fa-plus"></i> Tao don moi</a>
         </div>
 
         <div th:if="${successMessage}" class="page-alert success" th:text="${successMessage}"></div>
@@ -39,6 +42,7 @@
                     <th>Ma don</th>
                     <th>Khach hang</th>
                     <th>Dien thoai</th>
+                    <th>San pham</th>
                     <th>Tong tien</th>
                     <th>Trang thai</th>
                     <th style="width:220px;">Hanh dong</th>
@@ -49,20 +53,28 @@
                     <td th:text="'#' + ${order.id}">#1</td>
                     <td th:text="${order.customerName}">Khach</td>
                     <td th:text="${order.phone}">0900</td>
+                    <td>
+                        <div th:if="${#lists.isEmpty(order.orderDetails)}" style="color:#6b7280;">Khong co chi tiet</div>
+                        <div th:each="detail : ${order.orderDetails}" style="font-size:13px; line-height:1.45;">
+                            <span th:text="${#strings.isEmpty(detail.productName) ? (detail.product != null ? detail.product.name : 'San pham') : detail.productName}">San pham</span>
+                            <span th:text="${' x' + detail.quantity}">x1</span>
+                        </div>
+                    </td>
                     <td th:text="'₫' + ${#numbers.formatInteger(order.totalPrice, 0, 'DEFAULT')}">₫0</td>
                     <td th:text="${order.status}">pending</td>
                     <td style="display:flex; gap:8px;">
-                        <a class="tgdd-btn tgdd-btn-light" th:href="@{/orders/edit/{id}(id=${order.id})}">
+                        <a th:if="${isOrderAdmin}" class="tgdd-btn tgdd-btn-light" th:href="@{/orders/edit/{id}(id=${order.id})}">
                             <i class="fas fa-pen"></i> Sua
                         </a>
-                        <a class="tgdd-btn tgdd-btn-primary" th:href="@{/orders/delete/{id}(id=${order.id})}"
+                        <a th:if="${isOrderAdmin}" class="tgdd-btn tgdd-btn-primary" th:href="@{/orders/delete/{id}(id=${order.id})}"
                            onclick="return confirm('Ban chac chan muon xoa don hang nay?')">
                             <i class="fas fa-trash"></i> Xoa
                         </a>
+                        <span th:unless="${isOrderAdmin}" style="color:#6b7280; font-size:13px;">Da dat</span>
                     </td>
                 </tr>
                 <tr th:if="${orders.isEmpty()}">
-                    <td colspan="6" class="tgdd-empty">Chua co don hang nao.</td>
+                    <td colspan="7" class="tgdd-empty">Chua co don hang nao.</td>
                 </tr>
                 </tbody>
             </table>
