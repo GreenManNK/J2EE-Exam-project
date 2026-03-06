@@ -206,10 +206,13 @@
                 <div class="empty-note" th:if="${#lists.isEmpty(promotionalProducts)}">Chưa có sản phẩm khuyến mãi.</div>
                 <div class="flash-sale__list" th:unless="${#lists.isEmpty(promotionalProducts)}">
                     <a class="product-card"
-                       th:each="product : ${#lists.size(promotionalProducts) > 8 ? #lists.subList(promotionalProducts, 0, 8) : promotionalProducts}"
+                        th:each="product : ${#lists.size(promotionalProducts) > 8 ? #lists.subList(promotionalProducts, 0, 8) : promotionalProducts}"
                        th:href="@{/products/{id}(id=${product.id})}">
                         <div class="product-card__img-wrapper">
-                            <div class="product-card__img-placeholder"><i class="fa-solid fa-box"></i></div>
+                            <img class="product-card__img"
+                                 th:if="${product.imageUrl != null and !#strings.isEmpty(product.imageUrl)}"
+                                 th:src="${product.imageUrl}" th:alt="${product.name}">
+                            <div class="product-card__img-placeholder" th:unless="${product.imageUrl != null and !#strings.isEmpty(product.imageUrl)}"><i class="fa-solid fa-box"></i></div>
                         </div>
                         <h3 class="product-card__title" th:text="${product.name}">Tên sản phẩm</h3>
                         <span class="product-card__old-price" th:if="${product.discount > 0}"
@@ -229,10 +232,13 @@
                 <div class="empty-note" th:if="${#lists.isEmpty(regularProducts)}">Chưa có sản phẩm thường.</div>
                 <div class="flash-sale__list" th:unless="${#lists.isEmpty(regularProducts)}">
                     <a class="product-card"
-                       th:each="product : ${#lists.size(regularProducts) > 10 ? #lists.subList(regularProducts, 0, 10) : regularProducts}"
+                        th:each="product : ${#lists.size(regularProducts) > 10 ? #lists.subList(regularProducts, 0, 10) : regularProducts}"
                        th:href="@{/products/{id}(id=${product.id})}">
                         <div class="product-card__img-wrapper">
-                            <div class="product-card__img-placeholder"><i class="fa-solid fa-mobile-screen-button"></i></div>
+                            <img class="product-card__img"
+                                 th:if="${product.imageUrl != null and !#strings.isEmpty(product.imageUrl)}"
+                                 th:src="${product.imageUrl}" th:alt="${product.name}">
+                            <div class="product-card__img-placeholder" th:unless="${product.imageUrl != null and !#strings.isEmpty(product.imageUrl)}"><i class="fa-solid fa-mobile-screen-button"></i></div>
                         </div>
                         <h3 class="product-card__title" th:text="${product.name}">Tên sản phẩm</h3>
                         <span class="product-card__old-price" th:if="${product.discount > 0}"

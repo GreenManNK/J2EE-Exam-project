@@ -32,6 +32,14 @@
             justify-content: center;
             color: #9ca3af;
             font-size: 76px;
+            overflow: hidden;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #fff;
         }
 
         .thumb-row {
@@ -50,6 +58,14 @@
             justify-content: center;
             color: #9ca3af;
             font-size: 20px;
+            overflow: hidden;
+        }
+
+        .thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #fff;
         }
 
         .thumb.active {
@@ -249,13 +265,19 @@
 
         <section class="layout">
             <div class="tgdd-card box gallery">
-                <div class="hero-image"><i class="fas fa-image"></i></div>
+                <div class="hero-image">
+                    <img th:if="${product.imageUrl != null and !#strings.isEmpty(product.imageUrl)}"
+                         th:src="${product.imageUrl}" th:alt="${product.name}">
+                    <i th:unless="${product.imageUrl != null and !#strings.isEmpty(product.imageUrl)}"
+                       class="fas fa-image"></i>
+                </div>
                 <div class="thumb-row">
-                    <div class="thumb active"><i class="fas fa-image"></i></div>
-                    <div class="thumb"><i class="fas fa-image"></i></div>
-                    <div class="thumb"><i class="fas fa-image"></i></div>
-                    <div class="thumb"><i class="fas fa-image"></i></div>
-                    <div class="thumb"><i class="fas fa-image"></i></div>
+                    <div class="thumb active">
+                        <img th:if="${product.imageUrl != null and !#strings.isEmpty(product.imageUrl)}"
+                             th:src="${product.imageUrl}" th:alt="${product.name}">
+                        <i th:unless="${product.imageUrl != null and !#strings.isEmpty(product.imageUrl)}"
+                           class="fas fa-image"></i>
+                    </div>
                 </div>
             </div>
 

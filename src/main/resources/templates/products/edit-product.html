@@ -55,6 +55,24 @@
                 </div>
 
                 <div class="tgdd-form-group">
+                    <label for="imageUrl">Anh san pham (URL)</label>
+                    <input id="imageUrl" type="url" th:field="*{imageUrl}" placeholder="https://example.com/product.jpg">
+                </div>
+
+                <div class="tgdd-form-group" th:if="${product.imageUrl != null and !#strings.isEmpty(product.imageUrl)}">
+                    <label>Anh hien tai</label>
+                    <div style="border:1px solid #e5e7eb; border-radius:10px; width:180px; height:180px; padding:8px; background:#fff;">
+                        <img th:src="${product.imageUrl}" alt="Anh san pham"
+                             style="width:100%; height:100%; object-fit:contain; border-radius:8px;">
+                    </div>
+                    <label style="display:flex; gap:8px; align-items:center; margin-top:10px;">
+                        <input type="checkbox" name="removeImage" value="true"
+                               style="width:18px; height:18px; accent-color:#d70018;">
+                        Xoa anh hien tai
+                    </label>
+                </div>
+
+                <div class="tgdd-form-group">
                     <label style="display:flex; gap:8px; align-items:center;">
                         <input type="checkbox" style="width:18px; height:18px; accent-color:#d70018;" th:field="*{promotional}">
                         Bat tab san pham khuyen mai (khong bat thi hien o nhom thuong)

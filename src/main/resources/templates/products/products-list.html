@@ -197,6 +197,14 @@
             color: #9ca3af;
             font-size: 34px;
             margin-bottom: 8px;
+            overflow: hidden;
+        }
+
+        .thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #fff;
         }
 
         .name {
@@ -383,7 +391,12 @@
                     <article class="item" th:each="product : ${products}">
                         <div class="sale-badge" th:if="${product.promotional}">FLASH</div>
                         <div class="discount-badge" th:if="${product.discount > 0}" th:text="'-' + ${product.discount} + '%'">-10%</div>
-                        <div class="thumb"><i class="fas fa-image"></i></div>
+                        <div class="thumb">
+                            <img th:if="${product.imageUrl != null and !#strings.isEmpty(product.imageUrl)}"
+                                 th:src="${product.imageUrl}" th:alt="${product.name}">
+                            <i th:unless="${product.imageUrl != null and !#strings.isEmpty(product.imageUrl)}"
+                               class="fas fa-image"></i>
+                        </div>
                         <a class="name" th:href="@{/products/{id}(id=${product.id})}" th:text="${product.name}">San pham</a>
                         <div class="cat" th:text="${product.category != null ? product.category.name : 'Khong danh muc'}">Danh muc</div>
                         <div class="price-row">

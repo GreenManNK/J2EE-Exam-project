@@ -55,6 +55,12 @@
                 </div>
 
                 <div class="tgdd-form-group">
+                    <label for="imageUrl">Anh san pham (URL)</label>
+                    <input id="imageUrl" type="url" th:field="*{imageUrl}" placeholder="https://example.com/product.jpg">
+                    <small style="display:block; margin-top:6px; color:#6b7280;">Nhap link anh de hien thi tren danh sach, chi tiet, gio hang.</small>
+                </div>
+
+                <div class="tgdd-form-group">
                     <label style="display:flex; gap:8px; align-items:center;">
                         <input type="checkbox" style="width:18px; height:18px; accent-color:#d70018;" th:field="*{promotional}">
                         Bat tab san pham khuyen mai (khong bat thi hien o nhom thuong)

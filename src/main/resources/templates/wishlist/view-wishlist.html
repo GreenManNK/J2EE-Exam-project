@@ -25,6 +25,13 @@
             color: #9ca3af;
             font-size: 36px;
             margin-bottom: 10px;
+            overflow: hidden;
+        }
+        .thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #fff;
         }
         .name {
             font-size: 15px;
@@ -72,7 +79,12 @@
 
         <div class="grid" th:unless="${#lists.isEmpty(wishlist)}">
             <div class="tgdd-card item" th:each="item : ${wishlist}">
-                <div class="thumb"><i class="fas fa-image"></i></div>
+                <div class="thumb">
+                    <img th:if="${item.product.imageUrl != null and !#strings.isEmpty(item.product.imageUrl)}"
+                         th:src="${item.product.imageUrl}" th:alt="${item.product.name}">
+                    <i th:unless="${item.product.imageUrl != null and !#strings.isEmpty(item.product.imageUrl)}"
+                       class="fas fa-image"></i>
+                </div>
                 <div class="name" th:text="${item.product.name}">Ten san pham</div>
                 <div class="cat" th:text="${item.product.category != null ? item.product.category.name : 'Khong danh muc'}">Danh muc</div>
                 <div class="price" th:text="'₫' + ${#numbers.formatInteger(item.product.price, 0, 'DEFAULT')}">₫0</div>

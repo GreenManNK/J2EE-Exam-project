@@ -90,11 +90,15 @@ public class ProductController {
 
     @PostMapping("/edit/{id}")
     public String updateProduct(@PathVariable Long id, @Valid @ModelAttribute("product") Product product,
+            @RequestParam(name = "removeImage", required = false, defaultValue = "false") boolean removeImage,
             BindingResult result, Model model) {
         if (result.hasErrors()) {
             product.setId(id);
             model.addAttribute("categories", categoryService.getAllCategories());
             return "/products/edit-product";
+        }
+        if (removeImage) {
+            product.setImageUrl(null);
         }
         productService.updateProduct(product);
         return "redirect:/products";
